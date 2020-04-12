@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <header>Welcome to login page</header>
+
+    {% csrf_token %}
+    <form method="POST">
+    {{form}}
+    <button type="submit">Login</button>
+    </form>
+
+  <img alt="Strona w budowie" class="img"  src="https://www.pecetowicz.pl/images/strona-w-budowie.jpg"
+      
+{% endblock content %}
