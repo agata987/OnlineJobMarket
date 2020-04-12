@@ -1,5 +1,4 @@
 from rest_framework import generics
-from rest_framework.authentication import TokenAuthentication
 from .serializers import *
 from ..models import *
 from django_filters.rest_framework import DjangoFilterBackend
@@ -15,7 +14,7 @@ class UserList(generics.ListCreateAPIView):
 
     # filters
     filter_backends = (DjangoFilterBackend, OrderingFilter)
-    filter_fields = ('password','email','first_name','last_name','telephone','is_job_seeker','is_employee','is_active','is_superuser')
+    filter_fields = ('password','email','first_name','last_name','phone','is_job_seeker','is_employee','is_active','is_superuser')
     ordering_fields = ('email','first_name','last_name','is_job_seeker','is_employee','is_active')
     search_fields = ('email','first_name','last_name')
 
