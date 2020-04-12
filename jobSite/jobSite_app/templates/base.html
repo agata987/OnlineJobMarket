@@ -1,0 +1,32 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>{% block title %}{% endblock %}</title>
+  <link href="{% static "css/base.css" %}" rel="stylesheet">
+</head>
+<body>
+  <div id="header">
+  <span class="logo">OnlineJobMarket</span>
+
+  {% if request.user.is_authenticated %}
+        // jezeli uzytkownik jest zalogowany
+        // jakas tresc
+  {% endif %}
+
+  <span class="user">
+    {% if request.user.is_authenticated %}
+      Witaj, {{ request.user.first_name }}!
+      <a href="#">Wyloguj</a>
+    {% else %}
+      <a href="#">Zaloguj</a>
+    {% endif %}
+  </span>
+  </div>
+
+  <div id="content">
+    {% block content %}
+    {% endblock %}
+  </div>
+</body>
+</html>
