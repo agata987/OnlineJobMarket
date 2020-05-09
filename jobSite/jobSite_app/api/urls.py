@@ -2,6 +2,8 @@ from django.urls import path
 from . import views as reg_view
 from rest_framework.authtoken import views
 
+from jobSite_app.api.views import registration_view
+
 app_name = "jobSite_app"
 
 urlpatterns = [
@@ -11,7 +13,7 @@ urlpatterns = [
     path('cities/', reg_view.CityList.as_view(), name='cities_list'),
     path('cities/<pk>/', reg_view.CityDetail.as_view(), name='city_detail'),
 
-    path('comments/', reg_view.CommentList, name='comments_list'),
+    path('comments/', reg_view.CommentList.as_view(), name='comments_list'),
     path('comments/<pk>/', reg_view.CommentDetail.as_view(), name='comment_detail'),
 
     path('countries/', reg_view.CountryList.as_view(), name='countries_list'),
@@ -21,4 +23,6 @@ urlpatterns = [
     path('offers/<pk>/', reg_view.OfferDetail.as_view(), name='offer_detail'),
 
     path('token-auth/',views.obtain_auth_token,name='token-auth'),
+
+    path('register/',registration_view,name="register"),
 ]

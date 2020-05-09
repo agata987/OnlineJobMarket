@@ -134,6 +134,15 @@ class JobOffer(models.Model):
         null=True
     )
 
+    min_salary = models.FloatField(
+        null=False,
+        default=2600.00
+    )
+
+    max_salary = models.FloatField(
+        null=True
+    )
+
     def __str__(self):
         return self.name
 

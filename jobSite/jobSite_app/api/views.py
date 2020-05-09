@@ -5,6 +5,9 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
 
 # user
 
@@ -22,6 +25,22 @@ class UserList(generics.ListCreateAPIView):
     authetication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
 
+# register user
+
+@api_view(['POST',])
+def registration_view(request):
+    serializer = RegistrationSerializer(data=request.data)
+    data = {}
+    if serializer.is_valid():
+        user_obj = serializer.save()
+        data['response'] = "New user registered."
+        data['email'] = user_obj.email
+        data['first_name'] = user_obj.first_name
+        data['last_name'] = user_obj.last_name
+    else:
+        data = serializer.errors
+    return Response(data)
+    
 
 class UserDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
@@ -90,8 +109,8 @@ class CountryList(generics.ListCreateAPIView):
 
     # filters
     filter_backends = (DjangoFilterBackend, OrderingFilter)
-    filter_fields = ('name')
-    ordering_fields = ('name')
+    filter_fields = ('name',)
+    ordering_fields = ('name',)
 
     # authetication and permissions
     authetication_classes = (TokenAuthentication,)
