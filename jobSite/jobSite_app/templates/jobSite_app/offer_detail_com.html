@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}Tytuł{% endblock %}
+
+{% block content %}
+    <h3> {{ offer.name }} </h3>
+    <p> firma: {{ offer.company }} </p>
+    <p> pełny etat: {% if offer.full_time %} tak {% else %} nie {% endif %}
+    <p> zdalnie: {% if offer.remote %} tak {% else %} nie {% endif %}
+    <p> opis: {{ offer.description }} </p>
+    <p> miasto: {{ city.name }}</p>
+    {% comment %} potem jako pracodawce wrzuce linka do jego strony {% endcomment %}
+    <p> pracodawca: {{ employee }} </p>
+    <p> wynagrodzenie: {{ offer.min_salary }} - {{ offer.max_salary }}
+
+    {% if offer.id_city_id != NULL %}
+    {% for city in cities  %}
+        {% if offer.id_city_id == city.id %}
+            <p> misto: {{ city.name }}, kraj: 
+            {% for country in countries %}
+                {% if country.id == city.id_country_id %}
+                    {{ country.name }}
+                {% endif %}
+            {% endfor %}
+            </p>
+        {% endif %}
+    {% endfor %}
+    {% endif %}
+
+    <p>komentarze:<p>
+    {% for comment in comments %}
+        <h5> {{ comment.date_published }} 
+            {% for user_ in users %} 
+                    {% if user_.id == comment.id_user_id %}
+                    {{ user_.first_name }} {{ user_.last_name }}
+            {% endfor %}
+        </h5>
+        <p> {{ comment.text }} </p>
+    {% endfor %}
+
+{% endblock %}

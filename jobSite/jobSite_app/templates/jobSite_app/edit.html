@@ -10,4 +10,5 @@
         {% csrf_token %}
         <p><input type="submit" value="Zapisz zmiany"></p>
     </form>
+    <a class="btn btn-outline-success my-2 my-sm-0" href="{% url "my_account" %}">Powrót</a>
 {% endblock %}

@@ -4,10 +4,7 @@ from django.contrib.auth import authenticate, login
 from .forms import *
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-
-
-def index(request):
-    return render(request, 'jobSite_app/index.html')
+from .models import *
 
 
 def my_account(request):
@@ -35,7 +32,8 @@ def user_login(request):
 
 
 def dashboard(request):
-    return render(request,'jobSite_app/dashboard.html',{'section':'dashboard'})
+    offers = JobOffer.objects.all()
+    return render(request,'jobSite_app/dashboard.html',{'section':'dashboard', 'offers':offers})
 
 
 def register(request):
@@ -63,3 +61,26 @@ def edit(request):
     else:
         user_form = UserEditForm(instance = request.user)
     return render(request, 'jobSite_app/edit.html',{'user_form':user_form})
+
+
+def offer_detail(request, id):
+    try:
+        offer = JobOffer.objects.get(pk=id)
+        cities = City.objects.all()
+        countries = Country.objects.all()
+        employee = User.objects.get(pk=offer.id_employee_id)
+        users = User.objects.all()      # poprawic tak zeby nie trzeba bylo pobierac wszystkich uzytkownikow
+
+        try:
+            comments = Comment.objects.get(id_job_offer_id=offer.id)
+        except Comment.DoesNotExist:
+            return render(request, 'jobSite_app/offer_detail.html', {'offer':offer, 'cities':cities, 'countries':countries, 'employee':employee, 'users':users})
+
+    except JobOffer.DoesNotExist:
+        raise Http404("Ta oferta nie istnieje.")
+    return render(request, 'jobSite_app/offer_detail_com.html', {'offer':offer, 'cities':cities, 'countries':countries, 'employee':employee,'comments':comments})
+
+
+@login_required
+def create_offer(request):
+    return render(request, 'jobSite_app/create_offer.html')

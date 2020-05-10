@@ -5,6 +5,23 @@
 {% block content %}
     <h1>Witaj na stronie swojego konta</h1>
     <p>Witaj na stronie swojego konta</p>
+
+    <p>email: {{ user }}</p>
+    <p>imię: {{ user.first_name }}</p>
+    <p>nazwisko: {{ user.last_name }}</p>
+    <p>telefon: {{ user.phone }}</p>
+    <p>szuka:
+    {% if user.is_job_seeker  %}
+        pracy
+    {% endif %}
+
+    {% if user.is_employee %}
+         pracowników
+    {% endif %} </p>
+    <p>opis: {{ user.description }}</p>
+
+
+
     <a class="btn btn-outline-success my-2 my-sm-0" href={% url 'password_change' %}>Zmień hasło</a>
     <a class="btn btn-outline-success my-2 my-sm-0" href={% url 'edit' %}>Edytuj konto</a>
 {% endblock %}

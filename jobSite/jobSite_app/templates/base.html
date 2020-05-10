@@ -27,7 +27,7 @@
       </li>
       {% if request.user.is_authenticated %}
         <li {% if section == "jobOffer" %} {% endif %}>
-        <a class="nav-link" href="#">Utwórz ofertę</a>
+        <a class="nav-link" href="{% url "create_offer" %}">Utwórz ofertę</a>
         </li>
       {% endif %}
     </ul>
@@ -55,35 +55,6 @@
     </ul>
   </div>
 </nav>
-
-
-{% comment %} to co wyzej bez stylu jest w komentarzach {% endcomment %}
-
-{% comment %} 
-    <ul>
-      {% if request.user.is_authenticated %}
-        <li {% if section == "jobOffer" %} {% endif %}>
-        <a href="#">Utwórz ofertę</a>
-        </li>
-        <li {% if section == "dashboard" %} {% endif %}>
-        <a href="{% url "#" %}">Moje konto</a>
-        </li>
-      {% endif %}
-        <li>
-        <a href="{% url "dashboard" %}">O stronie</a>
-        </li>
-    </ul> {% endcomment %}
-  
-
-  {% comment %} <span class="user">
-    {% if request.user.is_authenticated %}
-      Witaj, {{ request.user.first_name }}!
-      <a href="{% url "logout" %}">Wyloguj</a>
-    {% else %}
-      <a href="{% url "login" %}">Zaloguj</a>
-    {% endif %}
-  </span>
-  </div> {% endcomment %}
 
   {% comment %} wyswietlanie komunikatow {% endcomment %}
   {% if messages %}

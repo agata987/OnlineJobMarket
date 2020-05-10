@@ -3,6 +3,15 @@
 {% block title %}Panel główny{% endblock %}
 
 {% block content %}
-    <h1>Panel główny</h1>
-    <p>Witaj w panelu głównym.</p>
+    <h1>Oferty pracy</h1>
+    <p>Tutaj możesz przeglądać bieżące oferty pracy.</p>
+
+    {% for offer in offers %}
+        <h4>{{ offer.name }}</h4>
+        <p>Firma: {{ offer.company }}</p>
+        <p>Opis: {{ offer.description }}</p>
+        <p>Wynagrodzenie: {{ offer.min_salary }} - {{ offer.max_salary }} zł</p>
+        <a class="btn btn-outline-success my-2 my-sm-0" href="offer_detail/{{ offer.id }}/">Zobacz szczegóły</a>
+    {% endfor %}
+
 {% endblock %}

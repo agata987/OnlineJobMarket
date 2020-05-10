@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 
-from .models import User
+from .models import User, JobOffer
 
 class LoginForm(forms.Form):
     email = forms.CharField()
@@ -82,3 +82,9 @@ class UserEditForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ('first_name', 'last_name', 'phone', 'is_job_seeker','is_employee','description')
+
+
+class CreateJobOffer(forms.ModelForm):
+    class Meta:
+        model = JobOffer
+        fields = {"name","company","full_time","remote","description","max_salary","min_salary"}
