@@ -2,27 +2,99 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+
   <title>{% block title %}{% endblock %}</title>
-  <link href="{% static "css/base.css" %}" rel="stylesheet">
+  <link href="{% static "css/base__.css" %}" rel="stylesheet">
 </head>
 <body>
-  <div id="header">
-  <span class="logo">OnlineJobMarket</span>
 
-  {% if request.user.is_authenticated %}
-        // jezeli uzytkownik jest zalogowany
-        // jakas tresc
-  {% endif %}
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+    <a class="navbar-brand" href="{% url "dashboard" %}">OnlineJobMarket</a>
+    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+      <li class="nav-item active">
+        <a class="nav-link" href="{% url "dashboard" %}"">Strona główna<span class="sr-only">(current)</span></a>
+      </li>
+      {% if request.user.is_authenticated %}
+        <li {% if section == "jobOffer" %} {% endif %}>
+        <a class="nav-link" href="#">Utwórz ofertę</a>
+        </li>
+      {% endif %}
+    </ul>
 
-  <span class="user">
+    <ul class="navbar-nav my-2 my-lg-0">
+      <li class="form-inline my-2 my-lg-0">
+        {% if request.user.is_authenticated %}
+          <div style="padding-right:10px">
+          Witaj, {{ request.user.first_name }}!
+          </div>
+        <a class="btn btn-outline-success my-2 my-sm-0" href="{% url "logout" %}">Wyloguj się</a>
+        {% else %}
+        <a class="btn btn-outline-success my-2 my-sm-0" href="{% url "login" %}">Zaloguj się</a>
+        {% endif %}
+      </li>
+        {% if request.user.is_authenticated %}
+        <li style="padding-left:10px">
+          <a class="btn btn-outline-success my-2 my-sm-0" href="{% url "my_account" %}">Moje konto</a>
+        </li>
+        {% else %}
+        <li style="padding-left:10px">
+          <a class="btn btn-outline-success my-2 my-sm-0" href="{% url "register" %}">Utwórz konto</a>
+        </li>
+        {% endif %}
+    </ul>
+  </div>
+</nav>
+
+
+{% comment %} to co wyzej bez stylu jest w komentarzach {% endcomment %}
+
+{% comment %} 
+    <ul>
+      {% if request.user.is_authenticated %}
+        <li {% if section == "jobOffer" %} {% endif %}>
+        <a href="#">Utwórz ofertę</a>
+        </li>
+        <li {% if section == "dashboard" %} {% endif %}>
+        <a href="{% url "#" %}">Moje konto</a>
+        </li>
+      {% endif %}
+        <li>
+        <a href="{% url "dashboard" %}">O stronie</a>
+        </li>
+    </ul> {% endcomment %}
+  
+
+  {% comment %} <span class="user">
     {% if request.user.is_authenticated %}
       Witaj, {{ request.user.first_name }}!
-      <a href="#">Wyloguj</a>
+      <a href="{% url "logout" %}">Wyloguj</a>
     {% else %}
-      <a href="#">Zaloguj</a>
+      <a href="{% url "login" %}">Zaloguj</a>
     {% endif %}
   </span>
-  </div>
+  </div> {% endcomment %}
+
+  {% comment %} wyswietlanie komunikatow {% endcomment %}
+  {% if messages %}
+    <ul>
+      {% for message in messages %}
+        <li>
+          {{ message|safe }}
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %} 
 
   <div id="content">
     {% block content %}

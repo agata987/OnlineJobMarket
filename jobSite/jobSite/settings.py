@@ -129,3 +129,15 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+# gdzie ma nastapic przekierowanie, jezeli widok contrib.auth.views.login
+# nie otrzymuje parametru next
+LOGIN_REDIRECT_URL = 'dashboard'
+# adres URL. do ktorego ma nastapic przekierowanie po zalogowaniu uzytkownika
+# (np. za pomoca dekoratora login_required) 
+LOGIN_URL = 'login'
+# adres URL, do ktorego ma nastapic przekierowanie po wylogowaniu uzytkownika
+LOGOUT_URL = 'logout'
+
+# nie mamy jeszcze utworzonego email'a np. na gmail i nie podepniemy sie pod SMTP,
+# pozniej sie do dokonczy, na razie bedziemy uzywali do testow konsoli
+EMAIL_BACKEND="django.core.mail.backends.console.EmailBackend"

@@ -31,8 +31,8 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser):
     email = models.EmailField(max_length=255, null=False, unique=True)
-    first_name = models.CharField(max_length=255, null=False, default="name")
-    last_name = models.CharField(max_length=255, null=False, default="surname")
+    first_name = models.CharField(max_length=255, null=False)
+    last_name = models.CharField(max_length=255, null=False)
     phone = models.CharField(max_length=15, null=True)  # mozna dodac walidacje <--------
     is_job_seeker = models.BooleanField(null=False, default=True)
     is_employee = models.BooleanField(null=False, default=False)

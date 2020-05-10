@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block title %}Moje konto{% endblock %}
+
+{% block content %}
+    <h1>Witaj na stronie swojego konta</h1>
+    <p>Witaj na stronie swojego konta</p>
+    <a class="btn btn-outline-success my-2 my-sm-0" href={% url 'password_change' %}>Zmień hasło</a>
+    <a class="btn btn-outline-success my-2 my-sm-0" href={% url 'edit' %}>Edytuj konto</a>
+{% endblock %}

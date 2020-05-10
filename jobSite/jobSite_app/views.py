@@ -2,10 +2,16 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login
 from .forms import *
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 
 def index(request):
     return render(request, 'jobSite_app/index.html')
+
+
+def my_account(request):
+    return render(request, 'jobSite_app/myAccount.html')
 
 
 def user_login(request):
@@ -26,3 +32,34 @@ def user_login(request):
     else:
         form = LoginForm()
     return render(request, 'jobSite_app/login.html', {'form': form})
+
+
+def dashboard(request):
+    return render(request,'jobSite_app/dashboard.html',{'section':'dashboard'})
+
+
+def register(request):
+    if request.method == 'POST':
+        user_form = RegisterForm(request.POST)
+        if user_form.is_valid():
+            new_user = user_form.save(commit=False)     # utworzenie nowego obiektu uzytkownika, ale jeszcze nie zapisujemy go w bazie danych
+            new_user.set_password(user_form.cleaned_data['password'])
+            new_user.save()    # zapisanie obiektu user
+            return render(request,'jobSite_app/register_done.html',{'new_user':new_user})
+    else:
+        user_form = RegisterForm()
+    return render(request,'jobSite_app/register.html',{'user_form':user_form})
+
+
+@login_required
+def edit(request):
+    if request.method == 'POST':
+        user_form = UserEditForm(instance=request.user,data=request.POST)
+        if user_form.is_valid():
+            user_form.save()
+            messages.success(request, 'Uaktualnienie profilu zakończyło się sukcesem.')
+        else:
+            messages.error(request, 'Wystąpił błąd podczas uaktualniania profilu.')
+    else:
+        user_form = UserEditForm(instance = request.user)
+    return render(request, 'jobSite_app/edit.html',{'user_form':user_form})
