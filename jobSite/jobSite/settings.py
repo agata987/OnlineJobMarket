@@ -25,7 +25,7 @@ SECRET_KEY = 'ukd2+yqs4b2ctc95ozk^w&2+a(mf=++c&b8=4(o5ksw(@s!!2+'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['django02.pythonanywhere.com','127.0.0.1']
 
 
 # Application definition
@@ -128,12 +128,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = '/home/django02/portal_ofert_pracy/static'
 
 # gdzie ma nastapic przekierowanie, jezeli widok contrib.auth.views.login
 # nie otrzymuje parametru next
 LOGIN_REDIRECT_URL = 'dashboard'
 # adres URL. do ktorego ma nastapic przekierowanie po zalogowaniu uzytkownika
-# (np. za pomoca dekoratora login_required) 
+# (np. za pomoca dekoratora login_required)
 LOGIN_URL = 'login'
 # adres URL, do ktorego ma nastapic przekierowanie po wylogowaniu uzytkownika
 LOGOUT_URL = 'logout'
