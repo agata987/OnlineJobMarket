@@ -1,10 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login
 from .forms import *
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import *
+
 
 
 def my_account(request):
@@ -82,29 +83,6 @@ def offer_detail(request, id):
 
 
 @login_required
-def my_offers_detail(request):
-    try:
-        offers = JobOffer.objects.filter(id_employee_id = request.user.id)
-
-        try:
-            cities = City.objects.all()
-        except City.DoesNotExist:
-            cities = None
-        
-        try:
-            countries = Country.objects.all()
-        except Country.DoesNotExist:
-            countries = None
-
-    except JobOffer.DoesNotExist:
-        offers = None
-        cities = None
-        countries = None
-
-    return render(request, 'jobSite_app/my_offers_detail.html', {'offers':offers, 'cities':cities, 'countries':countries})
-
-
-@login_required
 def my_offers(request):
     try:
         my_offers = JobOffer.objects.filter(id_employee_id = request.user.id)
@@ -113,6 +91,8 @@ def my_offers(request):
     
     return render(request, 'jobSite_app/my_offers.html', {'my_offers':my_offers})
 
+
+@login_required
 def create_offer(request):
     
     if request.method == 'POST':
@@ -133,9 +113,63 @@ def create_offer(request):
 
             jobOffer = JobOffer(name=offer_form.cleaned_data['name'],id_employee=request.user,company=offer_form.cleaned_data['company'],full_time=offer_form.cleaned_data['full_time'],remote=offer_form.cleaned_data['remote'],description=offer_form.cleaned_data['description'],id_city=city,min_salary=offer_form.cleaned_data['min_salary'],max_salary=offer_form.cleaned_data['max_salary'])
             jobOffer.save()
-            return render(request, 'jobSite_app/offer_created.html')
+            return redirect(my_offers)
         else:
             return HttpResponse("offer not valid")
     else:
         offer_form = CreateOfferForm()
         return render(request, 'jobSite_app/create_offer.html', {'offer_form':offer_form})
+
+
+
+@login_required
+def edit_offer(request, id):
+    offer = JobOffer.objects.get(id=id)
+
+    if request.method == 'POST':
+        edit_form = EditOfferForm(request.POST)
+
+        if edit_form.is_valid():
+            
+            #  edytowanie oferty
+            full_time = edit_form.cleaned_data['full_time']
+            remote = edit_form.cleaned_data['remote']
+            description = edit_form.cleaned_data['description']
+            min_salary = edit_form.cleaned_data['min_salary']
+            max_salary = edit_form.cleaned_data['max_salary']
+
+            offer = JobOffer.objects.filter(pk=id).update(full_time=full_time,remote=remote,description=description,min_salary=min_salary,max_salary=max_salary)
+
+
+            try:
+                offer = JobOffer.objects.get(pk=id)
+                cities = City.objects.all()
+                countries = Country.objects.all()
+                employee = User.objects.get(pk=offer.id_employee_id)
+                users = User.objects.all()      # poprawic tak zeby nie trzeba bylo pobierac wszystkich uzytkownikow
+
+                try:
+                    comments = Comment.objects.get(id_job_offer_id=offer.id)
+                except Comment.DoesNotExist:
+                    return render(request, 'jobSite_app/offer_detail.html', {'offer':offer, 'cities':cities, 'countries':countries, 'employee':employee, 'users':users})
+            except JobOffer.DoesNotExist:
+                raise Http404("Ta oferta nie istnieje.")
+    else:
+        edit_form = EditOfferForm()
+        offer = JobOffer.objects.get(id=id)
+
+        # wartosci poczatkowe formularza
+        edit_form.fields['full_time'].initial = offer.full_time
+        edit_form.fields['remote'].initial = offer.remote
+        edit_form.fields['description'].initial = offer.description
+        edit_form.fields['min_salary'].initial = offer.min_salary
+        edit_form.fields['max_salary'].initial = offer.max_salary
+
+        return render(request, 'jobSite_app/edit_offer.html', {'edit_form':edit_form, 'offer':offer})
+
+
+@login_required
+def delete_offer(request,id):
+    offer = JobOffer.objects.filter(id=id).delete()
+    
+    return redirect(my_offers)

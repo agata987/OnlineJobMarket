@@ -4,19 +4,32 @@
 
 {% block content %}
     <h3> {{ offer.name }} </h3>
-    <p> firma: {{ offer.company }} </p>
-    <p> pełny etat: {% if offer.full_time %} tak {% else %} nie {% endif %}
-    <p> zdalnie: {% if offer.remote %} tak {% else %} nie {% endif %}
-    <p> opis: {{ offer.description }} </p>
-    <p> miasto: {{ city.name }}</p>
+    {% if offer.company != NULL %}
+        <p> Firma: {{ offer.company }} </p>
+        {% else %}
+        <p> Firma: Brak </p>
+    {% endif %}
+    <p> Pełny etat: {% if offer.full_time %} Tak {% else %} Nie {% endif %}
+    <p> Zdalnie: {% if offer.remote %} Tak {% else %} Nie {% endif %}
+    {% if offer.description != NULL %}
+        <p> Opis: {{ offer.description }} </p>
+        {% else %}
+        <p> Opis: Brak </p>
+    {% endif %}
     {% comment %} potem jako pracodawce wrzuce linka do jego strony {% endcomment %}
-    <p> pracodawca: {{ employee }} </p>
-    <p> wynagrodzenie: {{ offer.min_salary }} - {{ offer.max_salary }}
+    <p> Pracodawca: {{ employee }} </p>
+
+    {% if offer.max_salary != NULL %}
+            <p>Wynagrodzenie: {{ offer.min_salary }} - {{ offer.max_salary }} zł </p>
+          {% else %}
+            <p>Wynagrodzenie minimalne: {{ offer.min_salary }} zł </p>
+          {% endif %}
 
     {% if offer.id_city_id != NULL %}
     {% for city in cities  %}
         {% if offer.id_city_id == city.id %}
-            <p> misto: {{ city.name }}, kraj: 
+            <p>Misto: {{ city.name }}</p> 
+            <p>Kraj: 
             {% for country in countries %}
                 {% if country.id == city.id_country_id %}
                     {{ country.name }}
@@ -27,7 +40,7 @@
     {% endfor %}
     {% endif %}
 
-    <p>komentarze:<p>
+    <p>Komentarze:<p>
 
     {% comment %} to sie jakos inaczej zrobi {% endcomment %}
     <a class="btn btn-outline-success my-2 my-sm-0" href="#">Dodaj komentarz</a>

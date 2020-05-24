@@ -6,16 +6,26 @@
     <h3>Moje oferty pracy</h3>
     <a class="btn btn-primary my-2 my-sm-0" href="{% url "create_offer" %}">Utwórz ofertę</a>
 
-    {% for offer in my_offers %}
-    <p> Stanowisko: {{ offer.name }} </p>
-    <p> Opis: {{ offer.description }} </p>
-    <p> Wynagrodzenie: {{ offer.min_salary }} - {{ offer.max_salary }} zł</p>
+    {% if my_offers %}
+        {% for offer in my_offers %}
+        <p> Stanowisko: {{ offer.name }} </p>
+        {% if offer.description != NULL %}
+            <p> Opis: {{ offer.description }} </p>
+            {% else %}
+            <p> Opis: Brak </p>
+        {% endif %}
+        {% if offer.max_salary != NULL %}
+            <p>Wynagrodzenie: {{ offer.min_salary }} - {{ offer.max_salary }} zł </p>
+          {% else %}
+            <p>Wynagrodzenie minimalne: {{ offer.min_salary }} zł </p>
+        {% endif %}
 
-    <a class="btn btn-outline-success my-2 my-sm-0" href="offer_detail/{{ offer.id }}/">Zobacz szczegóły</a>
-    <a class="btn btn-outline-success my-2 my-sm-0" href="#">Edytuj</a>
-    <a class="btn btn-outline-success my-2 my-sm-0" href="#">Usuń</a>
+        <a class="btn btn-outline-success my-2 my-sm-0" href="offer_detail/{{ offer.id }}/">Zobacz szczegóły</a>
+        <a class="btn btn-outline-success my-2 my-sm-0" href="edit_offer/{{ offer.id }}/">Edytuj</a>
+        <a class="btn btn-outline-success my-2 my-sm-0" href="delete_offer/{{ offer.id }}/">Usuń</a>
 
-    {% endfor %}
+        {% endfor %}
+    {% endif %}
 
     
 {% endblock %}

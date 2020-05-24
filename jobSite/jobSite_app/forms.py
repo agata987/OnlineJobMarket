@@ -100,3 +100,9 @@ class CreateOfferForm(forms.Form):
     min_salary = forms.FloatField(label = "Min. wynagrodzenie:", max_value=10000000)
     max_salary = forms.FloatField(label = "Max. wynagrodzenie:", max_value=10000000,required=False)
 
+class EditOfferForm(forms.Form):
+    full_time = forms.BooleanField(label="Pełny etat:",initial=True,required=False)
+    remote = forms.BooleanField(label="Zdalnie:",initial=False,required=False)
+    description = forms.CharField(label = "Opis:", widget=forms.Textarea(attrs={'rows':5, 'cols':30}),required=False)
+    min_salary = forms.FloatField(label = "Min. wynagrodzenie:", max_value=10000000)
+    max_salary = forms.FloatField(label = "Max. wynagrodzenie:", max_value=10000000,required=False)

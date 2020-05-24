@@ -9,7 +9,8 @@ urlpatterns = [
     path('edit/',views.edit,name='edit'),
     path('offer_detail/<int:id>/',views.offer_detail,name="offer_detail"),
     path('my_offers',views.my_offers,name="my_offers"),
-    path('my_offers_detail/<int:id>/',views.my_offers_detail,name="my_offers_detail"),
     path('create_offer',views.create_offer,name="create_offer"),
+    path('edit_offer/<int:id>/',views.edit_offer,name="edit_offer"),
+    path('delete_offer/<int:id>/',views.delete_offer,name="delete_offer"),
     path('',include('django.contrib.auth.urls')),
     ]

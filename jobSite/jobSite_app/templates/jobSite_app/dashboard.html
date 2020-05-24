@@ -8,9 +8,21 @@
 
     {% for offer in offers %}
         <h4>{{ offer.name }}</h4>
-        <p>Firma: {{ offer.company }}</p>
-        <p>Opis: {{ offer.description }}</p>
-        <p>Wynagrodzenie: {{ offer.min_salary }} - {{ offer.max_salary }} zł</p>
+        {% if offer.company != NULL %}
+            <p> Firma: {{ offer.company }} </p>
+            {% else %}
+            <p> Firma: Brak </p>
+        {% endif %}
+        {% if offer.description != NULL %}
+            <p> Opis: {{ offer.description }} </p>
+            {% else %}
+            <p> Opis: Brak </p>
+        {% endif %}
+        {% if offer.max_salary != NULL %}
+            <p>Wynagrodzenie: {{ offer.min_salary }} - {{ offer.max_salary }} zł </p>
+          {% else %}
+            <p>Wynagrodzenie minimalne: {{ offer.min_salary }} zł </p>
+        {% endif %}
         <a class="btn btn-outline-success my-2 my-sm-0" href="offer_detail/{{ offer.id }}/">Zobacz szczegóły</a>
     {% endfor %}
 
