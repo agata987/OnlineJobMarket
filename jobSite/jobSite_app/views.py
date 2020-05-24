@@ -82,5 +82,60 @@ def offer_detail(request, id):
 
 
 @login_required
+def my_offers_detail(request):
+    try:
+        offers = JobOffer.objects.filter(id_employee_id = request.user.id)
+
+        try:
+            cities = City.objects.all()
+        except City.DoesNotExist:
+            cities = None
+        
+        try:
+            countries = Country.objects.all()
+        except Country.DoesNotExist:
+            countries = None
+
+    except JobOffer.DoesNotExist:
+        offers = None
+        cities = None
+        countries = None
+
+    return render(request, 'jobSite_app/my_offers_detail.html', {'offers':offers, 'cities':cities, 'countries':countries})
+
+
+@login_required
+def my_offers(request):
+    try:
+        my_offers = JobOffer.objects.filter(id_employee_id = request.user.id)
+    except JobOffer.DoesNotExist:
+        my_offers = None
+    
+    return render(request, 'jobSite_app/my_offers.html', {'my_offers':my_offers})
+
 def create_offer(request):
-    return render(request, 'jobSite_app/create_offer.html')
+    
+    if request.method == 'POST':
+        offer_form = CreateOfferForm(request.POST)
+
+        if offer_form.is_valid():
+            try:
+                country = Country.objects.get(name=offer_form.cleaned_data['country'])
+            except Country.DoesNotExist:
+                country = Country(name=offer_form.cleaned_data['country'])
+                country.save()
+
+            try:
+                city = City.objects.get(name=offer_form.cleaned_data['city'])
+            except City.DoesNotExist:
+                city = City(name = offer_form.cleaned_data['city'], id_country = country)
+                city.save()
+
+            jobOffer = JobOffer(name=offer_form.cleaned_data['name'],id_employee=request.user,company=offer_form.cleaned_data['company'],full_time=offer_form.cleaned_data['full_time'],remote=offer_form.cleaned_data['remote'],description=offer_form.cleaned_data['description'],id_city=city,min_salary=offer_form.cleaned_data['min_salary'],max_salary=offer_form.cleaned_data['max_salary'])
+            jobOffer.save()
+            return render(request, 'jobSite_app/offer_created.html')
+        else:
+            return HttpResponse("offer not valid")
+    else:
+        offer_form = CreateOfferForm()
+        return render(request, 'jobSite_app/create_offer.html', {'offer_form':offer_form})

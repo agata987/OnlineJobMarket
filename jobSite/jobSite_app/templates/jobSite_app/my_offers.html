@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Moje oferty pracy{% endblock %}
+
+{% block content %}
+    <h3>Moje oferty pracy</h3>
+    <a class="btn btn-primary my-2 my-sm-0" href="{% url "create_offer" %}">Utwórz ofertę</a>
+
+    {% for offer in my_offers %}
+    <p> Stanowisko: {{ offer.name }} </p>
+    <p> Opis: {{ offer.description }} </p>
+    <p> Wynagrodzenie: {{ offer.min_salary }} - {{ offer.max_salary }} zł</p>
+
+    <a class="btn btn-outline-success my-2 my-sm-0" href="offer_detail/{{ offer.id }}/">Zobacz szczegóły</a>
+    <a class="btn btn-outline-success my-2 my-sm-0" href="#">Edytuj</a>
+    <a class="btn btn-outline-success my-2 my-sm-0" href="#">Usuń</a>
+
+    {% endfor %}
+
+    
+{% endblock %}

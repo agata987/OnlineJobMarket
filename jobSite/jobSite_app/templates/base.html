@@ -27,7 +27,7 @@
       </li>
       {% if request.user.is_authenticated %}
         <li {% if section == "jobOffer" %} {% endif %}>
-        <a class="nav-link" href="{% url "create_offer" %}">Utwórz ofertę</a>
+        <a class="nav-link" href="{% url "my_offers" %}">Moje oferty</a>
         </li>
       {% endif %}
     </ul>

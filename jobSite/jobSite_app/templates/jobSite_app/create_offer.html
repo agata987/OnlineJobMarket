@@ -1,8 +1,14 @@
 {% extends "base.html" %}
 
-{% block title %}Tworzenie oferty pracy{% endblock %}
+{% block title %}Tworzenie nowej oferty pracy{% endblock %}
 
 {% block content %}
-strona tworzenia oferty pracy
+<h3>Tworzenie nowej oferty pracy:</h3>
 
+    <form method='POST'>
+        
+        {{ offer_form.as_p }}
+        {% csrf_token %}
+        <p><input type="submit" value="Utwórz ofertę"></p>
+    </form>
 {% endblock %}

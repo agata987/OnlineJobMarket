@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}Moje oferty pracy{% endblock %}
+
+{% block content %}
+<h3>Moje oferty pracy:</h3>
+
+
+  {% if offers %}
+    <ul>
+      {% for offer in offers %}
+          <p>Nazwa: {{ offer.name }}</p>
+          <p>Firma: {{ offer.company }}</p>
+          {% if offer.full_time %}
+          <p>Czy pałny etat: TAK</p>
+          {% else %}
+          <p>Czy pałny etat: NIE</p>
+          {% endif %}
+          {% if offer.remote %}
+          <p>Czy zdalnie: TAK</p>
+          {% else %}
+          <p>Czy zdalnie: NIE</p>
+          {% endif %}
+          {% if offer.description %}
+          <p>Opis: {{ offer.description }}</p>
+          {% else %}
+          <p>Opis: Brak</p>
+          {% endif %}
+          {% for city in cities %}
+            {% if offer.id_city_id == city.id %}
+            <p>Miasto: {{ city.name }}</p>
+            {% for country in countries %}
+                {% if city.id_country_id == country.id %}
+                    <p>Kraj: {{ country.name }}</p>
+                {% endif %}
+            {% endfor %}
+            {% endif %}
+          {% endfor %}
+          {% if offer.id_city_id == NULL %}
+            <p>Miasto: Brak </p>
+            <p>Kraj: Brak </p>
+          {% endif %}
+          {% if offer.max_salary != NULL %}
+            <p>Wynagrodzenie: {{ offer.min_salary }} - {{ offer.max_salary }} zł </p>
+          {% else %}
+            <p>Wynagrodzenie minimalne: {{ offer.min_salary }} zł </p>
+          {% endif %}
+          <a class="btn btn-outline-success my-2 my-sm-0" href="#">Edytuj</a>
+          <a class="btn btn-outline-success my-2 my-sm-0" href="#">Usuń</a>
+      {% endfor %}
+    </ul>
+  {% endif %} 
+
+<a class="btn btn-outline-success my-2 my-sm-0" href="{% url "create_offer" %}">Utwórz ofertę</a>
+
+{% endblock %}
