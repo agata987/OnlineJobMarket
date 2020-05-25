@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from jobSite_app.choices import *
 
 
 class UserManager(BaseUserManager):
@@ -98,6 +99,8 @@ class City(models.Model):
         return self.name
 
 
+
+
 class JobOffer(models.Model):
     name = models.CharField(
         max_length=30,
@@ -143,8 +146,14 @@ class JobOffer(models.Model):
         null=True
     )
 
+    category = models.IntegerField(
+        choices=CATEGORY_CHOICES,
+        default=22
+    )
+
     def __str__(self):
         return self.name
+
 
 
 class Comment(models.Model):

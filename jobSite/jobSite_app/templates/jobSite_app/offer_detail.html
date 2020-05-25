@@ -9,6 +9,15 @@
         {% else %}
         <p> Firma: Brak </p>
     {% endif %}
+
+
+    {% comment %} kategoria {% endcomment %}
+    {% for cat_num, cat_name in categories %}
+    {% if cat_num == offer.category %}
+        <p>Kategoria: {{ cat_name }}</p>
+    {% endif %}
+    {% endfor %}
+
     <p> Pełny etat: {% if offer.full_time %} Tak {% else %} Nie {% endif %}
     <p> Zdalnie: {% if offer.remote %} Tak {% else %} Nie {% endif %}
     {% if offer.description != NULL %}
@@ -28,7 +37,9 @@
     {% if offer.id_city_id != NULL %}
     {% for city in cities  %}
         {% if offer.id_city_id == city.id %}
-            <p>Misto: {{ city.name }}</p> 
+            <p>Miasto: {{ city.name }}</p> 
+
+            {% if city.name != "Inne" %}
             <p>Kraj: 
             {% for country in countries %}
                 {% if country.id == city.id_country_id %}
@@ -36,6 +47,7 @@
                 {% endif %}
             {% endfor %}
             </p>
+            {% endif %}
         {% endif %}
     {% endfor %}
     {% endif %}

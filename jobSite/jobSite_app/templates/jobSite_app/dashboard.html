@@ -8,16 +8,18 @@
 
     {% for offer in offers %}
         <h4>{{ offer.name }}</h4>
-        {% if offer.company != NULL %}
+        {% if offer.company != NULL and offer.company != "" %}
             <p> Firma: {{ offer.company }} </p>
-            {% else %}
+        {% else %}
             <p> Firma: Brak </p>
         {% endif %}
-        {% if offer.description != NULL %}
-            <p> Opis: {{ offer.description }} </p>
-            {% else %}
-            <p> Opis: Brak </p>
-        {% endif %}
+
+        {% for city in cities %}
+            {% if city.id == offer.id_city_id %}
+            <p>Miasto: {{ city.name }} </p>
+            {% endif %}
+        {% endfor %}
+
         {% if offer.max_salary != NULL %}
             <p>Wynagrodzenie: {{ offer.min_salary }} - {{ offer.max_salary }} zł </p>
           {% else %}

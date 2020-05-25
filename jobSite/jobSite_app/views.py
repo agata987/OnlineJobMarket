@@ -34,7 +34,8 @@ def user_login(request):
 
 def dashboard(request):
     offers = JobOffer.objects.all()
-    return render(request,'jobSite_app/dashboard.html',{'section':'dashboard', 'offers':offers})
+    cities = City.objects.all()
+    return render(request,'jobSite_app/dashboard.html',{'section':'dashboard', 'offers':offers, 'cities':cities})
 
 
 def register(request):
@@ -65,6 +66,7 @@ def edit(request):
 
 
 def offer_detail(request, id):
+
     try:
         offer = JobOffer.objects.get(pk=id)
         cities = City.objects.all()
@@ -75,11 +77,11 @@ def offer_detail(request, id):
         try:
             comments = Comment.objects.get(id_job_offer_id=offer.id)
         except Comment.DoesNotExist:
-            return render(request, 'jobSite_app/offer_detail.html', {'offer':offer, 'cities':cities, 'countries':countries, 'employee':employee, 'users':users})
+            return render(request, 'jobSite_app/offer_detail.html', {'offer':offer, 'cities':cities, 'countries':countries, 'employee':employee, 'users':users, 'categories':CATEGORY_CHOICES})
 
     except JobOffer.DoesNotExist:
         raise Http404("Ta oferta nie istnieje.")
-    return render(request, 'jobSite_app/offer_detail_com.html', {'offer':offer, 'cities':cities, 'countries':countries, 'employee':employee,'comments':comments})
+    return render(request, 'jobSite_app/offer_detail_com.html', {'offer':offer, 'cities':cities, 'countries':countries, 'employee':employee,'comments':comments, 'categories':CATEGORY_CHOICES})
 
 
 @login_required
@@ -99,19 +101,22 @@ def create_offer(request):
         offer_form = CreateOfferForm(request.POST)
 
         if offer_form.is_valid():
-            try:
-                country = Country.objects.get(name=offer_form.cleaned_data['country'])
-            except Country.DoesNotExist:
-                country = Country(name=offer_form.cleaned_data['country'])
-                country.save()
+            # try:
+            #     country = Country.objects.get(name=offer_form.cleaned_data['country'])
+            # except Country.DoesNotExist:
+            #     country = Country(name=offer_form.cleaned_data['country'])
+            #     country.save()
 
-            try:
-                city = City.objects.get(name=offer_form.cleaned_data['city'])
-            except City.DoesNotExist:
-                city = City(name = offer_form.cleaned_data['city'], id_country = country)
-                city.save()
+            # try:
+            #     city = City.objects.get(name=offer_form.cleaned_data['city'])
+            # except City.DoesNotExist:
+            #     city = City(name = offer_form.cleaned_data['city'], id_country = country)
+            #     city.save()
 
-            jobOffer = JobOffer(name=offer_form.cleaned_data['name'],id_employee=request.user,company=offer_form.cleaned_data['company'],full_time=offer_form.cleaned_data['full_time'],remote=offer_form.cleaned_data['remote'],description=offer_form.cleaned_data['description'],id_city=city,min_salary=offer_form.cleaned_data['min_salary'],max_salary=offer_form.cleaned_data['max_salary'])
+            city = City.objects.get(name=offer_form.cleaned_data['city'])
+
+
+            jobOffer = JobOffer(name=offer_form.cleaned_data['name'],id_employee=request.user,company=offer_form.cleaned_data['company'],category=offer_form.cleaned_data['category'], full_time=offer_form.cleaned_data['full_time'],remote=offer_form.cleaned_data['remote'],description=offer_form.cleaned_data['description'],id_city=city,min_salary=offer_form.cleaned_data['min_salary'],max_salary=offer_form.cleaned_data['max_salary'])
             jobOffer.save()
             return redirect(my_offers)
         else:
@@ -151,7 +156,7 @@ def edit_offer(request, id):
                 try:
                     comments = Comment.objects.get(id_job_offer_id=offer.id)
                 except Comment.DoesNotExist:
-                    return render(request, 'jobSite_app/offer_detail.html', {'offer':offer, 'cities':cities, 'countries':countries, 'employee':employee, 'users':users})
+                    return render(request, 'jobSite_app/offer_detail.html', {'offer':offer, 'cities':cities, 'countries':countries, 'employee':employee, 'users':users, 'categories':CATEGORY_CHOICES})
             except JobOffer.DoesNotExist:
                 raise Http404("Ta oferta nie istnieje.")
     else:
@@ -165,7 +170,7 @@ def edit_offer(request, id):
         edit_form.fields['min_salary'].initial = offer.min_salary
         edit_form.fields['max_salary'].initial = offer.max_salary
 
-        return render(request, 'jobSite_app/edit_offer.html', {'edit_form':edit_form, 'offer':offer})
+        return render(request, 'jobSite_app/edit_offer.html', {'edit_form':edit_form, 'offer':offer, 'categories':CATEGORY_CHOICES})
 
 
 @login_required
