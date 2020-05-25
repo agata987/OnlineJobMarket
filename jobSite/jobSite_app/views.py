@@ -5,6 +5,7 @@ from .forms import *
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import *
+from itertools import chain
 
 
 
@@ -32,10 +33,84 @@ def user_login(request):
     return render(request, 'jobSite_app/login.html', {'form': form})
 
 
+def is_valid_(param):
+    return param != '' and param != "Wybierz..." and param is not None
+
+
 def dashboard(request):
     offers = JobOffer.objects.all()
     cities = City.objects.all()
-    return render(request,'jobSite_app/dashboard.html',{'section':'dashboard', 'offers':offers, 'cities':cities})
+    countries = Country.objects.all()
+
+    # filtry
+
+    offer_name_query = request.GET.get('offer_name')
+    company_query = request.GET.get('company')
+
+
+    if is_valid_(offer_name_query):
+        offers = offers.filter(name__icontains=offer_name_query)
+
+    if is_valid_(company_query):
+        offers = offers.filter(company__icontains=company_query)
+
+    category_name = request.GET.get('category')
+
+    if is_valid_(category_name):
+        for cat_num, cat_name in CATEGORY_CHOICES:
+            if cat_name == category_name:
+                offers = offers.filter(category=cat_num)
+                break
+    
+
+    city_name = request.GET.get('city')
+
+    if is_valid_(city_name):
+        for city2 in cities:
+            if city2.name == city_name:
+                offers = offers.filter(id_city_id=city2.id)
+                break
+    
+    min_salary_ = request.GET.get('minSalary')
+
+    if is_valid_(min_salary_):
+        offers = offers.filter(min_salary__gte=min_salary_)
+
+    not_full_time_ = request.GET.get('not_full_time')
+
+    if not_full_time_ == 'on':
+        offers = offers.filter(full_time = 0)
+    
+    remote_ = request.GET.get('remote')
+
+    if remote_ == 'on':
+        offers = offers.filter(remote = 1)
+
+    # to musi byc na koncu, lista nie ma atrybutu "filter"
+
+    country_name = request.GET.get('country')
+
+    if is_valid_(country_name):
+        for country2 in countries:
+            if country2.name == country_name:
+                cities2 = cities.filter(id_country_id = country2.id)
+
+                queries = []
+                combined_q = None
+
+                for offer in offers:
+                    for city2 in cities2:
+                        if offer.id_city_id == city2.id:
+                            if city2.name != "Inne":
+                                queries.append(offer)
+
+                offers = queries
+
+                break
+
+
+
+    return render(request,'jobSite_app/dashboard.html',{'section':'dashboard', 'offers':offers, 'cities':cities, 'categories':CATEGORY_CHOICES, 'countries':countries})
 
 
 def register(request):

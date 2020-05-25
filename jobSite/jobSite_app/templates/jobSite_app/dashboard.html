@@ -6,6 +6,70 @@
     <h1>Oferty pracy</h1>
     <p>Tutaj możesz przeglądać bieżące oferty pracy.</p>
 
+    {% comment %} filtrowanie {% endcomment %}
+    <h3>Filtry</h3>
+    <form method="GET" action=".">
+    <div class="form-row">
+        <div class="form-group col-md-2">
+            <label>Stanowisko</label>
+            <input type="search" class="form-control" placeholder="Nazwa zawiera..." name="offer_name">
+        </div>
+        <div class="form-group col-md-2">
+            <label>Firma</label>
+            <input type="search" class="form-control" placeholder="Nazwa zawiera..." name="company">
+        </div>
+    
+        <div class="form-group col-md-2">
+                <label for="category">Kategoria</label>
+                <select id="category" class="form-control" name="category">
+                <option selected>Wybierz...</option>
+                {% for cat_num, cat_name in categories %}
+                <option value="{{ cat_name }}">{{ cat_name }}</option>
+                {% endfor %}
+                </select>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-2">
+                <label for="city">Miasto</label>
+                <select id="city" class="form-control" name="city">
+                <option selected>Wybierz...</option>
+                {% for city in cities %}
+                <option value="{{ city.name }}">{{ city.name }}</option>
+                {% endfor %}
+                </select>
+        </div>
+         <div class="form-group col-md-2">
+                <label for="country">Kraj</label>
+                <select id="country" class="form-control" name="country">
+                <option selected>Wybierz...</option>
+                {% for country in countries %}
+                <option value="{{ country.name }}">{{ country.name }}</option>
+                {% endfor %}
+                </select>
+        </div>
+        <div class="form-group col-md-2">
+            <label for="minSalary">Minimalne wynagrodzenie</label>
+            <input type="number" min=0 class="form-control" id="minSalary" placeholder="min 0" name="minSalary">
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-check">
+        <input class="form-check-input" type="checkbox" id="not_full_time" name="not_full_time">
+        <label class="form-check-label" for="not_full_time">
+            Niepełny etat
+        </label>
+        </div>
+        <div class="form-check">
+        <input class="form-check-input" type="checkbox" id="remote" name="remote">
+        <label class="form-check-label" for="remote">
+            Zdalnie
+        </label>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Szukaj</button>
+    </form>
+
     {% for offer in offers %}
         <h4>{{ offer.name }}</h4>
         {% if offer.company != NULL and offer.company != "" %}
