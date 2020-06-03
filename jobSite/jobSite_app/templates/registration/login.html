@@ -1,24 +1,38 @@
 {% extends "base.html" %}
 
+{% load crispy_forms_tags %}
+
 {% block title %}Logowanie{% endblock %}
 
 {% block content %}
-    <h1>Logownie</h1>
-    {% if form.errors %}
-        <p>
-        Nazwa użytkownika lub hasło nieprawidłowe.
-        Spróbuj ponownie.
-        </p>
-    {% else %}
-        <p>Wypełnij poniższy formularz, aby się zalogować. Jeżeli nie masz jeszcze konta, możesz je utworzyć <a href="{% url "register" %}">tutaj</a>.</p>
-    {% endif %}
-    <div class="login-form">
-        <form action="{% url 'login' %}" method = "post">
-            {{ form.as_p }}
-            {% csrf_token %}
-            <input type="hidden" name="next" value="{{ next }}" />
-            <p><input type="submit" value="Zaloguj"></p>
-        </form>
-        <p><a href="{% url "password_reset" %}">Zapomniałeś hasła?</a></p>
-    </div>
+<div class="container ">
+    <div class="row">
+        <div class="col-md"></div>
+        <div class="col-md">
+            <h1 class="mt-3">Logownie</h1>
+            {% if form.errors %}
+                <p>
+                Nazwa użytkownika lub hasło nieprawidłowe.
+                Spróbuj ponownie.
+                </p>
+            {% else %}
+                <p>Wypełnij poniższy formularz, aby się zalogować. Jeżeli nie masz jeszcze konta, możesz je utworzyć <a href="{% url "register" %}">tutaj</a>.</p>
+            {% endif %}
+            <div class="login-form">
+                <form action="{% url 'login' %}" method = "post">
+                    {{ form.username|as_crispy_field }}
+                    {{ form.password|as_crispy_field }}
+                    {% csrf_token %}
+                    <input type="hidden" name="next" value="{{ next }}" />
+                    <p><input type="submit" value="Zaloguj"></p>
+                </form>
+                <p><a href="{% url "password_reset" %}">Zapomniałeś hasła?</a></p>
+            </div>
+
+        </div>
+        <div class="col-md"></div>
+      </div>
+    
+</div>
 {% endblock content %}
+

@@ -3,93 +3,134 @@
 {% block title %}Panel główny{% endblock %}
 
 {% block content %}
-    <h1>Oferty pracy</h1>
-    <p>Tutaj możesz przeglądać bieżące oferty pracy.</p>
-
-    {% comment %} filtrowanie {% endcomment %}
-    <h3>Filtry</h3>
-    <form method="GET" action=".">
-    <div class="form-row">
-        <div class="form-group col-md-2">
-            <label>Stanowisko</label>
-            <input type="search" class="form-control" placeholder="Nazwa zawiera..." name="offer_name">
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+            <h1 class="display-3" ><br>Oferty pracy</h1>
+            <h3>Tutaj możesz przeglądać bieżące oferty pracy<br> załóż konto i zaloguj się żeby móc je towrzyć</h3>
         </div>
-        <div class="form-group col-md-2">
-            <label>Firma</label>
-            <input type="search" class="form-control" placeholder="Nazwa zawiera..." name="company">
-        </div>
+    </div>
     
-        <div class="form-group col-md-2">
-                <label for="category">Kategoria</label>
-                <select id="category" class="form-control" name="category">
-                <option selected>Wybierz...</option>
-                {% for cat_num, cat_name in categories %}
-                <option value="{{ cat_name }}">{{ cat_name }}</option>
-                {% endfor %}
-                </select>
-        </div>
-    </div>
-    <div class="form-row">
-        <div class="form-group col-md-2">
-                <label for="city">Miasto</label>
-                <select id="city" class="form-control" name="city">
-                <option selected>Wybierz...</option>
-                {% for city in cities %}
-                <option value="{{ city.name }}">{{ city.name }}</option>
-                {% endfor %}
-                </select>
-        </div>
-         <div class="form-group col-md-2">
-                <label for="country">Kraj</label>
-                <select id="country" class="form-control" name="country">
-                <option selected>Wybierz...</option>
-                {% for country in countries %}
-                <option value="{{ country.name }}">{{ country.name }}</option>
-                {% endfor %}
-                </select>
-        </div>
-        <div class="form-group col-md-2">
-            <label for="minSalary">Minimalne wynagrodzenie</label>
-            <input type="number" min=0 class="form-control" id="minSalary" placeholder="min 0" name="minSalary">
-        </div>
-    </div>
-    <div class="form-row">
-        <div class="form-check">
-        <input class="form-check-input" type="checkbox" id="not_full_time" name="not_full_time">
-        <label class="form-check-label" for="not_full_time">
-            Niepełny etat
-        </label>
-        </div>
-        <div class="form-check">
-        <input class="form-check-input" type="checkbox" id="remote" name="remote">
-        <label class="form-check-label" for="remote">
-            Zdalnie
-        </label>
-        </div>
-    </div>
-    <button type="submit" class="btn btn-primary">Szukaj</button>
-    </form>
+    {% comment %} filtrowanie {% endcomment %}
+    <div class="container">
+        <h2>Filtry</h2>
+            <main class="row">
+                <div class="col-md-3">
+                    <form method="GET" action=".">
+                        <div class="form-row">
+                            <div class="form-group col-md">
+                                <label>Stanowisko</label>
+                                <input type="search" class="form-control" placeholder="Nazwa zawiera..." name="offer_name">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md">
+                                <label>Firma</label>
+                                <input type="search" class="form-control" placeholder="Nazwa zawiera..." name="company">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md">
+                                <label for="category">Kategoria</label>
+                                <select id="category" class="form-control" name="category">
+                                <option selected>Wybierz...</option>
+                                {% for cat_num, cat_name in categories %}
+                                <option value="{{ cat_name }}">{{ cat_name }}</option>
+                                {% endfor %}
+                                </select>
+                            </div>
+                        </div>
 
-    {% for offer in offers %}
-        <h4>{{ offer.name }}</h4>
-        {% if offer.company != NULL and offer.company != "" %}
-            <p> Firma: {{ offer.company }} </p>
-        {% else %}
-            <p> Firma: Brak </p>
-        {% endif %}
+                        <div class="form-row">
+                            <div class="form-group col-md">
+                                    <label for="city">Miasto</label>
+                                    <select id="city" class="form-control" name="city">
+                                    <option selected>Wybierz...</option>
+                                    {% for city in cities %}
+                                    <option value="{{ city.name }}">{{ city.name }}</option>
+                                    {% endfor %}
+                                    </select>
+                            </div>
+                        </div>
 
-        {% for city in cities %}
-            {% if city.id == offer.id_city_id %}
-            <p>Miasto: {{ city.name }} </p>
-            {% endif %}
-        {% endfor %}
+                        <div class="form-row">
+                            <div class="form-group col-md">
+                                    <label for="country">Kraj</label>
+                                    <select id="country" class="form-control" name="country">
+                                    <option selected>Wybierz...</option>
+                                    {% for country in countries %}
+                                    <option value="{{ country.name }}">{{ country.name }}</option>
+                                    {% endfor %}
+                                    </select>
+                            </div>
+                        </div>
 
-        {% if offer.max_salary != NULL %}
-            <p>Wynagrodzenie: {{ offer.min_salary }} - {{ offer.max_salary }} zł </p>
-          {% else %}
-            <p>Wynagrodzenie minimalne: {{ offer.min_salary }} zł </p>
-        {% endif %}
-        <a class="btn btn-outline-success my-2 my-sm-0" href="offer_detail/{{ offer.id }}/">Zobacz szczegóły</a>
-    {% endfor %}
+                        <div class="form-row">
+                            <div class="form-group col-md">
+                                <label for="minSalary">Min. wynagrodzenie</label>
+                                <input type="number" min=0 class="form-control" id="minSalary" placeholder="min 0" name="minSalary">
+                            </div>
+                        </div>
+
+                        
+                        <div class="form-row">
+                            <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="not_full_time" name="not_full_time">
+                            <label class="form-check-label" for="not_full_time">
+                                Niepełny etat
+                            </label>
+                            </div>
+                        </div>   
+
+                        <div class="form-row mt-2">
+                            <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="remote" name="remote">
+                            <label class="form-check-label" for="remote">
+                                Zdalnie
+                            </label>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <button type="submit" class="btn btn-primary mt-4 mb-4">Szukaj</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-9">
+
+                    <div class="row">
+                    {% for offer in offers %}
+                        <div class="col_mb-4">
+                            <div class="card mb-4 ml-4 bg-dark" style="width: 22rem;">
+                                <ul class="list-group list-group-flush ">
+
+                                    <li class="list-group-item "><div class="card-heade "><h3>{{ offer.name }}</h3></div></li>
+                                
+                                    {% if offer.company != NULL and offer.company != "" %}
+                                    
+                                    <li class="list-group-item">Firma: {{ offer.company }}</li>
+                                    {% else %}
+                                    <li class="list-group-item">Firma: Brak </li>
+                                    {% endif %}
+
+                                    {% for city in cities %}
+                                        {% if city.id == offer.id_city_id %}
+                                    <li class="list-group-item ">Miasto: {{ city.name }} </li>
+                                        {% endif %}
+                                    {% endfor %}
+
+                                    {% if offer.max_salary != NULL %}
+                                    <li class="list-group-item">Wynagrodzenie: {{ offer.min_salary }} - {{ offer.max_salary }} zł </li>
+                                    {% else %}
+                                    <li class="list-group-item "> Wynagrodzenie minimalne: {{ offer.min_salary }} zł </li>
+                                    {% endif %}
+                                    <li class="list-group-item "><a class="btn btn-outline-success my-2 my-sm-0" href="offer_detail/{{ offer.id }}/">Zobacz szczegóły</a></li>
+                                    
+                                </ul>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    </div>
+                </div>  
+            </main>
+    </div>
 
 {% endblock %}

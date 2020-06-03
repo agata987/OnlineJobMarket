@@ -3,6 +3,17 @@
 {% block title %}Witaj {% endblock %}
 
 {% block content %}
-    <h1>Witaj, {{ new_user.first_name }}!</h1>
-    <p>Twoje konto zostało utworzone. Możesz się już <a href="{% url "login" %}">zalogować</a>.</p>
+<div class="container">
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <div class="alert alert-success mt-5" role="alert">
+                <h1 class="alert-heading">Witaj, {{ new_user.first_name }}!</h1>
+                <p>Twoje konto zostało utworzone. Możesz się już <a href="{% url "login" %}">zalogować</a>.</p>
+            </div>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+</div>
+    
 {% endblock %}

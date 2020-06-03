@@ -1,59 +1,93 @@
 {% extends 'base.html' %}
 
+
 {% block title %}Tytuł{% endblock %}
 
 {% block content %}
-    <h3> {{ offer.name }} </h3>
-    {% if offer.company != NULL %}
-        <p> Firma: {{ offer.company }} </p>
-        {% else %}
-        <p> Firma: Brak </p>
-    {% endif %}
+<div class="container">
+    <div class="row">
+        <div class="col-md"></div>
+        <div class="col-md">
+            <div class="card mt-5 center" style="width: 100%;">
+                <div class="card-header">
+                    <h3> {{ offer.name }} </h3>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        {% if offer.company != NULL %}
+                            <p> Firma: {{ offer.company }} </p>
+                            {% else %}
+                            <p> Firma: Brak </p>
+                        {% endif %}
+                    </li>
+                    <li class="list-group-item">
+                        {% comment %} kategoria {% endcomment %}
+                        {% for cat_num, cat_name in categories %}
+                        {% if cat_num == offer.category %}
+                            <p>Kategoria: {{ cat_name }}</p>
+                        {% endif %}
+                        {% endfor %}
 
+                    </li>
+                    <li class="list-group-item">
+                        <p> Pełny etat: {% if offer.full_time %} Tak {% else %} Nie {% endif %}
+                    </li>
+                    <li class="list-group-item">
+                        <p> Zdalnie: {% if offer.remote %} Tak {% else %} Nie {% endif %}
+                    </li>
+                    <li class="list-group-item">
+                        {% if offer.description != NULL %}
+                            <p> Opis: {{ offer.description }} </p>
+                            {% else %}
+                            <p> Opis: Brak </p>
+                        {% endif %}
+                        {% comment %} potem jako pracodawce wrzuce linka do jego strony {% endcomment %}
+                    </li>
+                    <li class="list-group-item">
+                        <p> Pracodawca: {{ employee }} </p>
+                    </li>
 
-    {% comment %} kategoria {% endcomment %}
-    {% for cat_num, cat_name in categories %}
-    {% if cat_num == offer.category %}
-        <p>Kategoria: {{ cat_name }}</p>
-    {% endif %}
-    {% endfor %}
+                    <li class="list-group-item">
+                        {% if offer.max_salary != NULL %}
+                                <p>Wynagrodzenie: {{ offer.min_salary }} - {{ offer.max_salary }} zł </p>
+                            {% else %}
+                                <p>Wynagrodzenie minimalne: {{ offer.min_salary }} zł </p>
+                            {% endif %}
+                    </li>
 
-    <p> Pełny etat: {% if offer.full_time %} Tak {% else %} Nie {% endif %}
-    <p> Zdalnie: {% if offer.remote %} Tak {% else %} Nie {% endif %}
-    {% if offer.description != NULL %}
-        <p> Opis: {{ offer.description }} </p>
-        {% else %}
-        <p> Opis: Brak </p>
-    {% endif %}
-    {% comment %} potem jako pracodawce wrzuce linka do jego strony {% endcomment %}
-    <p> Pracodawca: {{ employee }} </p>
+                    <li class="list-group-item">    
+                        {% if offer.id_city_id != NULL %}
+                        {% for city in cities  %}
+                            {% if offer.id_city_id == city.id %}
+                                <p>Miasto: {{ city.name }}</p> 
+                    </li>
 
-    {% if offer.max_salary != NULL %}
-            <p>Wynagrodzenie: {{ offer.min_salary }} - {{ offer.max_salary }} zł </p>
-          {% else %}
-            <p>Wynagrodzenie minimalne: {{ offer.min_salary }} zł </p>
-          {% endif %}
+                    <li class="list-group-item">
+                                {% if city.name != "Inne" %}
+                                <p>Kraj: 
+                                {% for country in countries %}
+                                    {% if country.id == city.id_country_id %}
+                                        {{ country.name }}
+                                    {% endif %}
+                                {% endfor %}
+                                </p>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                        {% endif %}
+                    </li>
+                    <li class="list-group-item">    
+                        <p>Komentarze:<p>
+                    </li>
+                    <li class="list-group-item">
+                        {% comment %} to sie jakos inaczej zrobi {% endcomment %}
+                        <a class="btn btn-outline-success my-2 my-sm-0" href="#">Dodaj komentarz</a>
+                    </li>   
+                </ul>
+            </div>       
+        </div>
+        <div class="col-md"></div>
+    </div>
+</div>
 
-    {% if offer.id_city_id != NULL %}
-    {% for city in cities  %}
-        {% if offer.id_city_id == city.id %}
-            <p>Miasto: {{ city.name }}</p> 
-
-            {% if city.name != "Inne" %}
-            <p>Kraj: 
-            {% for country in countries %}
-                {% if country.id == city.id_country_id %}
-                    {{ country.name }}
-                {% endif %}
-            {% endfor %}
-            </p>
-            {% endif %}
-        {% endif %}
-    {% endfor %}
-    {% endif %}
-
-    <p>Komentarze:<p>
-
-    {% comment %} to sie jakos inaczej zrobi {% endcomment %}
-    <a class="btn btn-outline-success my-2 my-sm-0" href="#">Dodaj komentarz</a>
 {% endblock %}

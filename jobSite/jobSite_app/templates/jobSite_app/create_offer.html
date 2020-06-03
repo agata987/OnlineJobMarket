@@ -1,14 +1,27 @@
 {% extends "base.html" %}
 
+{% load crispy_forms_tags %}
+
 {% block title %}Tworzenie nowej oferty pracy{% endblock %}
 
 {% block content %}
-<h3>Tworzenie nowej oferty pracy:</h3>
+<div class="container">
+    <h3 class="mt-3" >Tworzenie nowej oferty pracy:</h3>
 
     <form method='POST'>
         
-        {{ offer_form.as_p }}
+        {{ offer_form.name|as_crispy_field }}
+        {{ offer_form.company|as_crispy_field }}
+        {{ offer_form.category|as_crispy_field }}
+        {{ offer_form.full_time|as_crispy_field }}
+        {{ offer_form.remote|as_crispy_field }}
+        {{ offer_form.description|as_crispy_field }}
+        {{ offer_form.city|as_crispy_field }}
+        {{ offer_form.min_salary|as_crispy_field }}
+        {{ offer_form.max_salary|as_crispy_field }}
         {% csrf_token %}
+
         <p><input type="submit" value="Utwórz ofertę"></p>
     </form>
+</div>    
 {% endblock %}

@@ -3,25 +3,33 @@
 {% block title %}Moje konto{% endblock %}
 
 {% block content %}
-    <h1>Witaj na stronie swojego konta</h1>
-    <p>Witaj na stronie swojego konta</p>
+    <div class="container my-5"">
+        <div class="card" style="width: 100%;">
+            <div class="card-header ">
+                <h1>Witaj na stronie swojego konta</h1>
+            </div>
+            
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item"><p>Adres email: {{ user }}</p></li>
+                <li class="list-group-item"><p>Imię: {{ user.first_name }}</p></li>
+                <li class="list-group-item"><p>Nazwisko: {{ user.last_name }}</p></li>
+                <li class="list-group-item"><p>Numer telefonu: {{ user.phone }}</p></li>
+                <li class="list-group-item"><p>Szuka:
+                {% if user.is_job_seeker  %}
+                    pracy
+                {% endif %}
 
-    <p>email: {{ user }}</p>
-    <p>imię: {{ user.first_name }}</p>
-    <p>nazwisko: {{ user.last_name }}</p>
-    <p>telefon: {{ user.phone }}</p>
-    <p>szuka:
-    {% if user.is_job_seeker  %}
-        pracy
-    {% endif %}
-
-    {% if user.is_employee %}
-         pracowników
-    {% endif %} </p>
-    <p>opis: {{ user.description }}</p>
+                {% if user.is_employee %}
+                    pracowników
+                {% endif %} </p></li>
+                <li class="list-group-item"><p>opis: {{ user.description }}</p></li>
 
 
+                <li class="list-group-item">
+                <a class="btn btn-outline-success my-2 my-sm-0" href={% url 'password_change' %}>Zmień hasło</a>
+                <a class="btn btn-outline-success my-2 my-sm-0" href={% url 'edit' %}>Edytuj konto</a></li>
 
-    <a class="btn btn-outline-success my-2 my-sm-0" href={% url 'password_change' %}>Zmień hasło</a>
-    <a class="btn btn-outline-success my-2 my-sm-0" href={% url 'edit' %}>Edytuj konto</a>
+            </ul>
+        </div>       
+    </div>
 {% endblock %}

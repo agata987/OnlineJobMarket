@@ -23,7 +23,7 @@ class UserList(generics.ListCreateAPIView):
 
     # authetication and permissions
     authetication_classes = (TokenAuthentication,)
-    # permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated,)
 
 # register user
 
@@ -48,7 +48,7 @@ class UserDetail(generics.RetrieveUpdateDestroyAPIView):
 
     # authetication and permissions
     authetication_classes = (TokenAuthentication,)
-    # permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated,)
 
 # city
 
@@ -63,7 +63,7 @@ class CityList(generics.ListCreateAPIView):
 
     # authetication and permissions
     authetication_classes = (TokenAuthentication,)
-    # permission_classes = (IsAuthenticatedOrReadOnly,)
+    permission_classes = (IsAuthenticatedOrReadOnly,)
 
 
 class CityDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -72,7 +72,7 @@ class CityDetail(generics.RetrieveUpdateDestroyAPIView):
 
     # authetication and permissions
     authetication_classes = (TokenAuthentication,)
-    # permission_classes = (IsAuthenticatedOrReadOnly,)
+    permission_classes = (IsAuthenticatedOrReadOnly,)
 
 
 # comment
@@ -89,7 +89,7 @@ class CommentList(generics.ListCreateAPIView):
 
     # authetication and permissions
     authetication_classes = (TokenAuthentication,)
-    # permission_classes = (IsAuthenticatedOrReadOnly,)
+    permission_classes = (IsAuthenticatedOrReadOnly,)
 
 
 class CommentDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -98,7 +98,7 @@ class CommentDetail(generics.RetrieveUpdateDestroyAPIView):
 
     # authetication and permissions
     authetication_classes = (TokenAuthentication,)
-    # permission_classes = (IsAuthenticatedOrReadOnly,)
+    permission_classes = (IsAuthenticatedOrReadOnly,)
 
 
 # country
@@ -114,7 +114,7 @@ class CountryList(generics.ListCreateAPIView):
 
     # authetication and permissions
     authetication_classes = (TokenAuthentication,)
-    # permission_classes = (IsAuthenticatedOrReadOnly,)
+    permission_classes = (IsAuthenticatedOrReadOnly,)
 
 
 class CountryDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -123,7 +123,7 @@ class CountryDetail(generics.RetrieveUpdateDestroyAPIView):
 
     # authetication and permissions
     authetication_classes = (TokenAuthentication,)
-    # permission_classes = (IsAuthenticatedOrReadOnly,)
+    permission_classes = (IsAuthenticatedOrReadOnly,)
 
 
 # offer
@@ -140,7 +140,7 @@ class OfferList(generics.ListCreateAPIView):
 
     # authetication and permissions
     authetication_classes = (TokenAuthentication,)
-    # permission_classes = (IsAuthenticatedOrReadOnly,)
+    permission_classes = (IsAuthenticatedOrReadOnly,)
 
 
 class OfferDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -149,4 +149,4 @@ class OfferDetail(generics.RetrieveUpdateDestroyAPIView):
 
     # authetication and permissions
     authetication_classes = (TokenAuthentication,)
-    # permission_classes = (IsAuthenticatedOrReadOnly,)
+    permission_classes = (IsAuthenticatedOrReadOnly,)

@@ -1,14 +1,25 @@
 {% extends 'base.html' %}
 
+{% load crispy_forms_tags %}
+
 {% block title %}Edycja konta {% endblock %}
 
 {% block content %}
-    <h1>Edycja konta</h1>
-    <p>Ustawienia konta można zmienić za pomocą poniższego formularza:</p>
-    <form action="." method="post">
-        {{ user_form.as_p }}
-        {% csrf_token %}
-        <p><input type="submit" value="Zapisz zmiany"></p>
-    </form>
-    <a class="btn btn-outline-success my-2 my-sm-0" href="{% url "my_account" %}">Powrót</a>
+    <div class="container w-50">
+        <h1 class="mt-3">Edycja konta</h1>
+        <p>Ustawienia konta można zmienić za pomocą poniższego formularza:</p>
+        <form action="." method="post">
+            
+            {{ user_form.first_name|as_crispy_field  }}
+            {{ user_form.last_name|as_crispy_field  }}
+            {{ user_form.phone|as_crispy_field  }}
+            {{ user_form.is_job_seeker|as_crispy_field  }}
+            {{ user_form.is_employee|as_crispy_field  }}
+            {{ user_form.description|as_crispy_field  }}
+
+            {% csrf_token %}
+            <p><input type="submit" value="Zapisz zmiany"></p>
+        </form>
+        <a class="btn btn-outline-success my-2 my-sm-0" href="{% url "my_account" %}">Powrót</a>
+    </div>   
 {% endblock %}

@@ -1,13 +1,28 @@
 {% extends 'base.html' %}
 
+{% load crispy_forms_tags %}
+
 {% block title %}Utwórz konto.{% endblock %}
 
 {% block content %}
-    <h1>Utwórz konto</h1>
-    <p>Wypełnij poniższy formularz, aby się zarejestrować:</p>
-    <form action="." method="post">
-        {{ user_form.as_p }}
-        {% csrf_token %}
-        <p><input type="submit" value="Utwórz konto"></p>
-    </form>
+<div class="container ">
+    <div class="row">
+        <div class="col-md"></div>
+        <div class="col-md">
+            <h1 class="mt-3" >Utwórz konto</h1>
+            <p>Wypełnij poniższy formularz, aby się zarejestrować:</p>
+            <form action="." method="post">
+                {{ user_form.email|as_crispy_field }}
+                {{ user_form.first_name|as_crispy_field }}
+                {{ user_form.last_name|as_crispy_field }}
+                {{ user_form.password|as_crispy_field }}
+                {{ user_form.password2|as_crispy_field }}
+                {% csrf_token %}
+                <p><input type="submit" value="Utwórz konto"></p>
+            </form>
+        </div>
+        <div class="col-md"></div>
+    </div>
+  
+</div>
 {% endblock %}

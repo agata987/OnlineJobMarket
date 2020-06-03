@@ -41,9 +41,12 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_filters',
     'rest_framework.authtoken',
+    'crispy_forms',
 ]
 
 AUTH_USER_MODEL = 'jobSite_app.User'  # changes the built-in user model to ours
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
