@@ -3,15 +3,20 @@ from .serializers import *
 from ..models import *
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import OrderingFilter, SearchFilter
-from rest_framework.authentication import TokenAuthentication
-from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
-from rest_framework.decorators import api_view
+from rest_framework.authentication import BasicAuthentication
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, AllowAny
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework import status
 
 # user
 
 class UserList(generics.ListCreateAPIView):
+   
+    # authentication and permissions
+    authentication_classes = (BasicAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
@@ -21,13 +26,11 @@ class UserList(generics.ListCreateAPIView):
     ordering_fields = ('email','first_name','last_name','is_job_seeker','is_employee','is_active')
     search_fields = ('email','first_name','last_name')
 
-    # authetication and permissions
-    authetication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticated,)
 
 # register user
 
 @api_view(['POST',])
+@permission_classes([AllowAny])
 def registration_view(request):
     serializer = RegistrationSerializer(data=request.data)
     data = {}
@@ -43,16 +46,23 @@ def registration_view(request):
     
 
 class UserDetail(generics.RetrieveUpdateDestroyAPIView):
+
+    # authentication and permissions
+    authentication_classes = (BasicAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
-    # authetication and permissions
-    authetication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticated,)
 
 # city
 
 class CityList(generics.ListCreateAPIView):
+
+    # authentication and permissions
+    authentication_classes = (BasicAuthentication,)
+    permission_classes = (IsAuthenticatedOrReadOnly,)
+
     queryset = City.objects.all()
     serializer_class = CitySerializer
 
@@ -61,23 +71,24 @@ class CityList(generics.ListCreateAPIView):
     filter_fields = ('name','id_country_id')
     ordering_fields = ('name')
 
-    # authetication and permissions
-    authetication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticatedOrReadOnly,)
 
 
 class CityDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = City.objects.all()
-    serializer_class = CitySerializer
-
-    # authetication and permissions
-    authetication_classes = (TokenAuthentication,)
+    
+    # authentication and permissions
+    authentication_classes = (BasicAuthentication,)
     permission_classes = (IsAuthenticatedOrReadOnly,)
 
+    queryset = City.objects.all()
+    serializer_class = CitySerializer
 
 # comment
 
 class CommentList(generics.ListCreateAPIView):
+    # authentication and permissions
+    authentication_classes = (BasicAuthentication,)
+    permission_classes = (IsAuthenticatedOrReadOnly,)
+
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
 
@@ -87,23 +98,24 @@ class CommentList(generics.ListCreateAPIView):
     ordering_fields = ('date_published')
     search_fields = ('text','date_published')
 
-    # authetication and permissions
-    authetication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticatedOrReadOnly,)
-
 
 class CommentDetail(generics.RetrieveUpdateDestroyAPIView):
+    # authentication and permissions
+    authentication_classes = (BasicAuthentication,)
+    permission_classes = (IsAuthenticatedOrReadOnly,)
+    
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
-
-    # authetication and permissions
-    authetication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticatedOrReadOnly,)
 
 
 # country
 
 class CountryList(generics.ListCreateAPIView):
+    
+    # authentication and permissions
+    authentication_classes = (BasicAuthentication,)
+    permission_classes = (IsAuthenticatedOrReadOnly,)
+
     queryset = Country.objects.all()
     serializer_class = CountrySerializer
 
@@ -112,23 +124,23 @@ class CountryList(generics.ListCreateAPIView):
     filter_fields = ('name',)
     ordering_fields = ('name',)
 
-    # authetication and permissions
-    authetication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticatedOrReadOnly,)
-
 
 class CountryDetail(generics.RetrieveUpdateDestroyAPIView):
+    # authentication and permissions
+    authentication_classes = (BasicAuthentication,)
+    permission_classes = (IsAuthenticatedOrReadOnly,)
+    
     queryset = Country.objects.all()
     serializer_class = CountrySerializer
-
-    # authetication and permissions
-    authetication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticatedOrReadOnly,)
 
 
 # offer
 
 class OfferList(generics.ListCreateAPIView):
+    # authentication and permissions
+    authentication_classes = (BasicAuthentication,)
+    permission_classes = (IsAuthenticatedOrReadOnly,)
+
     queryset = JobOffer.objects.all()
     serializer_class = JobOfferSerializer
 
@@ -138,15 +150,13 @@ class OfferList(generics.ListCreateAPIView):
     ordering_fields = ('name','company','full_time','remote','description','id_city_id','id_employee_id')
     search_fields = ('name','company','description')
 
-    # authetication and permissions
-    authetication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticatedOrReadOnly,)
 
 
 class OfferDetail(generics.RetrieveUpdateDestroyAPIView):
+    # authentication and permissions
+    authentication_classes = (BasicAuthentication,)
+    permission_classes = (IsAuthenticatedOrReadOnly,)
+    
     queryset = JobOffer.objects.all()
     serializer_class = JobOfferSerializer
 
-    # authetication and permissions
-    authetication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticatedOrReadOnly,)

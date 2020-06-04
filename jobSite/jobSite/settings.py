@@ -39,10 +39,16 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'django_filters',
     'rest_framework.authtoken',
+    'django_filters',
     'crispy_forms',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+}
 
 AUTH_USER_MODEL = 'jobSite_app.User'  # changes the built-in user model to ours
 
@@ -131,7 +137,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = '/home/django02/portal_ofert_pracy/static'
+STATIC_ROOT = '/home/django02/portal_ofert_pracy/jobSite/static'
 
 # gdzie ma nastapic przekierowanie, jezeli widok contrib.auth.views.login
 # nie otrzymuje parametru next
