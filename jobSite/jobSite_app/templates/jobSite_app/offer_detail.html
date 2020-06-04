@@ -78,10 +78,23 @@
                     </li>
                     <li class="list-group-item">    
                         <p>Komentarze:<p>
+                         {% for comment in comments %}
+                            <h5>{{ comment.date_published }}</h5>
+                            {% for user_ in users %} 
+                                {% if user_.id == comment.id_user_id %}
+                                <h5>{{ user_.first_name }} {{ user_.last_name }}</h5>
+                                {% endif %}
+                            {% endfor %}
+                        <p> {{ comment.text }} </p>
+                        {% endfor %}
                     </li>
                     <li class="list-group-item">
-                        {% comment %} to sie jakos inaczej zrobi {% endcomment %}
-                        <a class="btn btn-outline-success my-2 my-sm-0" href="#">Dodaj komentarz</a>
+                        {% comment %} Formularz dodawania komentarza. {% endcomment %}
+                        <form action="." method="post">
+                            {{ comment_form.text }}
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-primary mt-4 mb-4">Dodaj komentarz</button>
+                        </form>
                     </li>   
                 </ul>
             </div>       

@@ -108,3 +108,7 @@ class EditOfferForm(forms.Form):
     description = forms.CharField(label = "Opis:", widget=forms.Textarea(attrs={'rows':5, 'cols':30}),required=False)
     min_salary = forms.FloatField(label = "Min. wynagrodzenie:", max_value=10000000)
     max_salary = forms.FloatField(label = "Max. wynagrodzenie:", max_value=10000000,required=False)
+
+
+class CommentForm(forms.Form):
+   text = forms.CharField(widget=forms.Textarea(attrs={'rows':5, 'cols':30}),required=True)

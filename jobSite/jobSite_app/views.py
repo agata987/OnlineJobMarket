@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate, login
 from .forms import *
 from django.contrib.auth.decorators import login_required
@@ -142,6 +142,15 @@ def edit(request):
 
 def offer_detail(request, id):
 
+    if request.method == "POST":
+        comment_form = CommentForm(data=request.POST)
+        if comment_form.is_valid():
+            job_offer = JobOffer.objects.get(pk=id)
+            comment = Comment(text=comment_form.cleaned_data['text'],id_job_offer=job_offer,id_user=request.user)
+            comment.save()
+    else:
+        comment_form = CommentForm()
+
     try:
         offer = JobOffer.objects.get(pk=id)
         cities = City.objects.all()
@@ -150,13 +159,14 @@ def offer_detail(request, id):
         users = User.objects.all()      # poprawic tak zeby nie trzeba bylo pobierac wszystkich uzytkownikow
 
         try:
-            comments = Comment.objects.get(id_job_offer_id=offer.id)
+            comments = Comment.objects.filter(id_job_offer_id=offer.id)
         except Comment.DoesNotExist:
-            return render(request, 'jobSite_app/offer_detail.html', {'offer':offer, 'cities':cities, 'countries':countries, 'employee':employee, 'users':users, 'categories':CATEGORY_CHOICES})
+            comments = None
 
     except JobOffer.DoesNotExist:
         raise Http404("Ta oferta nie istnieje.")
-    return render(request, 'jobSite_app/offer_detail_com.html', {'offer':offer, 'cities':cities, 'countries':countries, 'employee':employee,'comments':comments, 'categories':CATEGORY_CHOICES})
+    return render(request, 'jobSite_app/offer_detail.html', {'offer':offer, 'cities':cities, 'countries':countries, 'employee':employee,'comments':comments, 'categories':CATEGORY_CHOICES,'comment_form':comment_form,'users':users})
+
 
 
 @login_required
