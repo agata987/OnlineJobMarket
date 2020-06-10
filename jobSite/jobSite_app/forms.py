@@ -79,11 +79,17 @@ class UserAdminChangeForm(forms.ModelForm):
         return self.initial["password"]
 
 
-class UserEditForm(forms.ModelForm):
-    class Meta:
-        model = User
-        fields = ('first_name', 'last_name', 'phone', 'is_job_seeker','is_employee','description')
-
+class UserEditForm(forms.Form):
+    # class Meta:
+    #     model = User
+    #     fields = ('first_name', 'last_name', 'phone', 'is_job_seeker','is_employee','description')
+    
+    first_name = forms.CharField(label="Imię", max_length=20, required=True)
+    last_name = forms.CharField(label="Nazwisko", max_length=30, required=True)
+    phone = forms.CharField(label="Nr telefonu", max_length=15, required=False)
+    is_job_seeker = forms.BooleanField(label="Czy szuka pracy",initial=True,required=False)
+    is_employee = forms.BooleanField(label="Czy jest pracodawcą",initial=False,required=False)
+    description = forms.CharField(label = "Opis:", widget=forms.Textarea(attrs={'rows':5, 'cols':30}),required=False)
 
 class CreateJobOffer(forms.ModelForm):
     class Meta:
@@ -98,7 +104,7 @@ class CreateOfferForm(forms.Form):
     remote = forms.BooleanField(label="Zdalnie:",initial=False,required=False)
     description = forms.CharField(label = "Opis:", widget=forms.Textarea(attrs={'rows':5, 'cols':30}),required=False)
     city =  forms.ChoiceField(label="Miasto:",choices=CITY_CHOICES,widget=forms.Select(),initial="Inne")
-    # country =  forms.CharField(label = "Kraj:", max_length=20,required=False)
+    # country =  forms.CharField(label = "Kraj:",choices=COUNTRY_CHOICES,widget=forms.Select(),initial="Inne")
     min_salary = forms.FloatField(label = "Min. wynagrodzenie:", max_value=10000000)
     max_salary = forms.FloatField(label = "Max. wynagrodzenie:", max_value=10000000,required=False)
 
@@ -111,4 +117,4 @@ class EditOfferForm(forms.Form):
 
 
 class CommentForm(forms.Form):
-   text = forms.CharField(widget=forms.Textarea(attrs={'rows':5, 'cols':30}),required=True)
+   text = forms.CharField(label="",widget=forms.Textarea(attrs={'rows':5, 'cols':30}),required=True)

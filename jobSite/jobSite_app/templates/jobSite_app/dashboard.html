@@ -11,26 +11,26 @@
     </div>
     
     {% comment %} filtrowanie {% endcomment %}
-    <div class="container">
-        <h2>Filtry</h2>
+    <div class="container" style="padding-bottom: 70px">
+        <h2 style="padding-bottom: 10px; padding-top:15px">FILTRY</h2>
             <main class="row">
                 <div class="col-md-3">
                     <form method="GET" action=".">
                         <div class="form-row">
                             <div class="form-group col-md">
-                                <label>Stanowisko</label>
+                                <h5>Stanowisko</h5>
                                 <input type="search" class="form-control" placeholder="Nazwa zawiera..." name="offer_name">
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md">
-                                <label>Firma</label>
+                                <h5>Firma</h5l>
                                 <input type="search" class="form-control" placeholder="Nazwa zawiera..." name="company">
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md">
-                                <label for="category">Kategoria</label>
+                                <h5 for="category">Kategoria</h5>
                                 <select id="category" class="form-control" name="category">
                                 <option selected>Wybierz...</option>
                                 {% for cat_num, cat_name in categories %}
@@ -42,7 +42,7 @@
 
                         <div class="form-row">
                             <div class="form-group col-md">
-                                    <label for="city">Miasto</label>
+                                    <h5 for="city">Miasto</h5>
                                     <select id="city" class="form-control" name="city">
                                     <option selected>Wybierz...</option>
                                     {% for city in cities %}
@@ -54,7 +54,7 @@
 
                         <div class="form-row">
                             <div class="form-group col-md">
-                                    <label for="country">Kraj</label>
+                                    <h5 for="country">Kraj</h5>
                                     <select id="country" class="form-control" name="country">
                                     <option selected>Wybierz...</option>
                                     {% for country in countries %}
@@ -66,7 +66,7 @@
 
                         <div class="form-row">
                             <div class="form-group col-md">
-                                <label for="minSalary">Min. wynagrodzenie</label>
+                                <h5 for="minSalary">Min. wynagrodzenie</h5>
                                 <input type="number" min=0 class="form-control" id="minSalary" placeholder="min 0" name="minSalary">
                             </div>
                         </div>
@@ -76,7 +76,7 @@
                             <div class="form-check">
                             <input class="form-check-input" type="checkbox" id="not_full_time" name="not_full_time">
                             <label class="form-check-label" for="not_full_time">
-                                Niepełny etat
+                                <h6>Niepełny etat</h6>
                             </label>
                             </div>
                         </div>   
@@ -85,12 +85,19 @@
                             <div class="form-check">
                             <input class="form-check-input" type="checkbox" id="remote" name="remote">
                             <label class="form-check-label" for="remote">
-                                Zdalnie
+                                <h6>Zdalnie</h6>
                             </label>
                             </div>
                         </div>
                         <div class="form-row">
-                            <button type="submit" class="btn btn-primary mt-4 mb-4">Szukaj</button>
+                            <button type="submit" class="btn btn-primary mt-4 mb-4"><h5>Szukaj
+                            {% comment %} ikona {% endcomment %}
+                            <svg class="bi bi-arrow-right-circle-fill" style="padding-left: 2px" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-8.354 2.646a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L9.793 7.5H5a.5.5 0 0 0 0 1h4.793l-2.147 2.146z"/>
+                            </svg>
+
+                            </h5>
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -102,27 +109,33 @@
                             <div class="card mb-4 ml-4 bg-dark" style="width: 22rem;">
                                 <ul class="list-group list-group-flush ">
 
-                                    <li class="list-group-item "><div class="card-heade "><h3>{{ offer.name }}</h3></div></li>
+                                    <li class="list-group-item "  ><div class="card-heade " style="border-bottom: 1px solid"><h3 >{{ offer.name }}</h3></div></li>
                                 
                                     {% if offer.company != NULL and offer.company != "" %}
                                     
-                                    <li class="list-group-item">Firma: {{ offer.company }}</li>
+                                    <li class="list-group-item"><b style="padding-right: 80px">FIRMA:</b> {{ offer.company }}</li>
                                     {% else %}
-                                    <li class="list-group-item">Firma: Brak </li>
+                                    <li class="list-group-item"><b style="padding-right: 80px">FIRMA: </b>----- </li>
                                     {% endif %}
 
                                     {% for city in cities %}
                                         {% if city.id == offer.id_city_id %}
-                                    <li class="list-group-item ">Miasto: {{ city.name }} </li>
+                                    <li class="list-group-item "><b style="padding-right: 80px">miasto:</b> {{ city.name }} </li>
                                         {% endif %}
                                     {% endfor %}
 
                                     {% if offer.max_salary != NULL %}
-                                    <li class="list-group-item">Wynagrodzenie: {{ offer.min_salary }} - {{ offer.max_salary }} zł </li>
+                                    <li class="list-group-item"><b style="padding-right: 10px">Wynagrodzenie:</b> {{ offer.min_salary }} - {{ offer.max_salary }} zł </li>
                                     {% else %}
-                                    <li class="list-group-item "> Wynagrodzenie minimalne: {{ offer.min_salary }} zł </li>
+                                    <li class="list-group-item "> <b style="padding-right: 10px">Wynagrodzenie min.:</b> {{ offer.min_salary }} zł </li>
                                     {% endif %}
-                                    <li class="list-group-item "><a class="btn btn-outline-success my-2 my-sm-0" href="offer_detail/{{ offer.id }}">Zobacz szczegóły</a></li>
+                                    <li class="list-group-item "><a class="btn btn-outline-success my-2 my-sm-0" style="padding-top: 10px; padding-bottom:10px" href="offer_detail/{{ offer.id }}">
+                                    
+                                    {% comment %} ikona {% endcomment %}
+                                    <svg class="bi bi-play" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" d="M10.804 8L5 4.633v6.734L10.804 8zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696l6.363 3.692z"/>
+                                    </svg>
+                                    Zobacz szczegóły</a></li>
                                     
                                 </ul>
                             </div>

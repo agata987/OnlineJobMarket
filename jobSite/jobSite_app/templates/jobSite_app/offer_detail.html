@@ -1,105 +1,197 @@
 {% extends 'base.html' %}
 
+{% load crispy_forms_tags %}
 
 {% block title %}Tytuł{% endblock %}
 
 {% block content %}
-<div class="container">
+
+
+<div class="container" style="padding-bottom: 70px; padding-top: 45px;">
     <div class="row">
-        <div class="col-md"></div>
-        <div class="col-md">
-            <div class="card mt-5 center" style="width: 100%;">
+        <div class="col-md-1"></div>
+        <div class="col-md-10" style="width: 100%; padding-left: 70px; padding-right: 70px; ">
+            <div class="card mt-5 center" >
                 <div class="card-header">
-                    <h3> {{ offer.name }} </h3>
+                    <h1 style="text-align: center"> {{ offer.name }} </h1>
                 </div>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item">
-                        {% if offer.company != NULL %}
-                            <p> Firma: {{ offer.company }} </p>
-                            {% else %}
-                            <p> Firma: Brak </p>
-                        {% endif %}
-                    </li>
-                    <li class="list-group-item">
-                        {% comment %} kategoria {% endcomment %}
-                        {% for cat_num, cat_name in categories %}
-                        {% if cat_num == offer.category %}
-                            <p>Kategoria: {{ cat_name }}</p>
-                        {% endif %}
-                        {% endfor %}
-
-                    </li>
-                    <li class="list-group-item">
-                        <p> Pełny etat: {% if offer.full_time %} Tak {% else %} Nie {% endif %}
-                    </li>
-                    <li class="list-group-item">
-                        <p> Zdalnie: {% if offer.remote %} Tak {% else %} Nie {% endif %}
-                    </li>
-                    <li class="list-group-item">
-                        {% if offer.description != NULL %}
-                            <p> Opis: {{ offer.description }} </p>
-                            {% else %}
-                            <p> Opis: Brak </p>
-                        {% endif %}
-                        {% comment %} potem jako pracodawce wrzuce linka do jego strony {% endcomment %}
-                    </li>
-                    <li class="list-group-item">
-                        <p> Pracodawca: {{ employee }} </p>
-                    </li>
-
-                    <li class="list-group-item">
-                        {% if offer.max_salary != NULL %}
-                                <p>Wynagrodzenie: {{ offer.min_salary }} - {{ offer.max_salary }} zł </p>
-                            {% else %}
-                                <p>Wynagrodzenie minimalne: {{ offer.min_salary }} zł </p>
+                <ul class="list-group list-group-flush" >
+                    <div style="border-bottom: 1px solid black; width: 100%; padding-left: 5%; padding-right: 5%">
+                        <li class="list-group-item" style="justify-content: center">
+                            {% if offer.company != NULL %}
+                            <div class="row" style="border-bottom: 1px solid black; padding-top: 50px">
+                                <div class="col">
+                                    <p> <b>FIRMA:</b></p>
+                                </div>
+                                <div class="col">
+                                 <p>{{ offer.company }} </p>
+                                 </div>
+               
+                                {% else %}
+                                <div class="col">
+                                <p> <b>FIRMA:</b></p> 
+                                </div>
+                                <div class="col">
+                                <p> Brak </p>
+                                </div>
+         
+                            </div>
                             {% endif %}
-                    </li>
+                        </li>
+                        
+                        <div style="border-bottom: 1px solid black; width: 100%; ">
+                        <li class="list-group-item">
+                            <div class="row">
+                            {% comment %} kategoria {% endcomment %}
+                            {% for cat_num, cat_name in categories %}
+                            {% if cat_num == offer.category %}
+                                <p class="col"><b>KATEGORIA:</b></p> <p class="col"> {{ cat_name }}</p>
+                            {% endif %}
+                            {% endfor %}  
+                            </div> 
+                        </li>
+                         </div>
 
-                    <li class="list-group-item">    
-                        {% if offer.id_city_id != NULL %}
-                        {% for city in cities  %}
-                            {% if offer.id_city_id == city.id %}
-                                <p>Miasto: {{ city.name }}</p> 
-                    </li>
+                         <div style="border-bottom: 1px solid black; width: 100%; ">
+                        <li class="list-group-item">
+                            <div class="row" style="padding-top: 10px"> 
+                            <p class = "col"> <b>PEŁNY ETAT:</b></p> <p class = "col" >{% if offer.full_time %} Tak {% else %} Nie {% endif %}</p>
+                            </div>
+                        </li>
+                        </div>
 
-                    <li class="list-group-item">
-                                {% if city.name != "Inne" %}
-                                <p>Kraj: 
-                                {% for country in countries %}
-                                    {% if country.id == city.id_country_id %}
-                                        {{ country.name }}
-                                    {% endif %}
-                                {% endfor %}
-                                </p>
+                        <div style="border-bottom: 1px solid black; width: 100%; ">
+                        <li class="list-group-item">
+                            <div class="row" style="padding-top: 10px"> 
+                            <p class="col"> <b>ZDALNIE:</b></p> <p class="col"> {% if offer.remote %} Tak {% else %} Nie {% endif %}</p>
+                            </div>
+                        </li>
+                        </div>
+
+                        <div style="border-bottom: 1px solid black; width: 100%; ">
+                        <li class="list-group-item">
+                            <div class="row"> 
+                                {% if offer.description != NULL %}
+                                    <p class="col"><b> OPIS:</b></p> <p class="col" style="width: 100%; "> {{ offer.description }} </p>
+                                    
+                                    {% else %}
+                                    <p> Opis: Brak </p>
                                 {% endif %}
-                            {% endif %}
-                        {% endfor %}
-                        {% endif %}
-                    </li>
-                    <li class="list-group-item">    
-                        <p>Komentarze:<p>
-                         {% for comment in comments %}
-                            <h5>{{ comment.date_published }}</h5>
-                            {% for user_ in users %} 
-                                {% if user_.id == comment.id_user_id %}
-                                <h5>{{ user_.first_name }} {{ user_.last_name }}</h5>
+                            </div>
+                            {% comment %} potem jako pracodawce wrzuce linka do jego strony {% endcomment %}
+                        </li>
+                        </div>
+
+                        <div style="border-bottom: 1px solid black; width: 100%; ">
+                        <li class="list-group-item">
+                        <div class="row" style="padding-top: 10px"> 
+                            <p class="col"> <b>PRACODAWCA: </b> </p> <p class="col">{{ employee }} </p>
+                            </div>
+                        </li>
+                        </div>
+
+                        <div style="border-bottom: 1px solid black; width: 100%; ">
+                        <li class="list-group-item">
+                        <div class="row" style="padding-top: 10px">
+                            {% if offer.max_salary != NULL %}
+                                
+                                    <p class="col"><b>WYNAGRODZENIE:</b></p> <p class="col">{{ offer.min_salary }} - {{ offer.max_salary }} zł </p>
+                                {% else %}
+                                    <p class="col"><b>WYNAGRODZENIE MIN.: </b></p> <p class="col">{{ offer.min_salary }} zł </p>
+                                
+                                {% endif %}
+                        </div>
+                        </li>
+                        </div>
+
+                        <div style="border-bottom: 1px solid black; width: 100%; ">
+                        <li class="list-group-item">    
+                        <div class="row" style="padding-top: 10px">
+                            {% if offer.id_city_id != NULL %}
+                            {% for city in cities  %}
+                                {% if offer.id_city_id == city.id %}
+                                    <p class="col"><b>MIASTO:</b></p> <p class="col"> {{ city.name }}</p> 
                                 {% endif %}
                             {% endfor %}
+                            {% endif %}
+                        </div>
+                        </li>
+                        </div>
+              
+
+                        <div style="border-bottom: 5px dotted black; width: 100%; ">
+                                       
+                        <li class="list-group-item">
+                         <div class="row" style="padding-top: 10px; padding-bottom: 30px">
+                        
+                                    {% if offer.id_city_id != NULL %}
+                                        {% for city in cities  %}
+                                            {% if city.name != "Inne" %}
+                                                {% if offer.id_city_id == city.id %}
+                                                
+                                                    <p class="col"><b>KRAJ: </b></p> <p class="col">
+                                                    {% for country in countries %}
+                                                        {% if country.id == city.id_country_id %}
+                                                            {{ country.name }}
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                    </p>
+                                                {% endif %}
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endif %}
+                        </div>
+                        </div>
+                        </li>
+                       
+                    
+
+                    
+                    <li class="list-group-item">    
+                        <h4 style="padding-top: 30px; padding-bottom: 10px">KOMENTARZE:</h4>
+                        
+                         {% for comment in comments %}
+                            <div style="border-bottom: 1px solid black; width: 100%; padding-top: 10px ; padding-bottom: 10px">
+                            <div class="row" style="padding-top: 10px; padding-bottom: 10px">
+                            
+                            {% for user_ in users %} 
+                                {% if user_.id == comment.id_user_id %}
+                                <h5 class="col">{{ user_.first_name }} {{ user_.last_name }}</h5>
+                                <p class="col">{{ comment.date_published }}</p>
+                                {% endif %}
+                            {% endfor %}
+
+                            
+                           </div> 
                         <p> {{ comment.text }} </p>
+                        
+                        
+                             </div>
                         {% endfor %}
+                       
                     </li>
-                    <li class="list-group-item">
-                        {% comment %} Formularz dodawania komentarza. {% endcomment %}
-                        <form action="." method="post">
-                            {{ comment_form.text }}
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-primary mt-4 mb-4">Dodaj komentarz</button>
-                        </form>
-                    </li>   
+   
+                    {% if request.user.is_authenticated %}
+                        <li class="list-group-item">
+                            {% comment %} Formularz dodawania komentarza. {% endcomment %}
+                            <form action="." method="post">
+                                {{ comment_form.text|as_crispy_field }}
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-primary mt-4 mb-4">Dodaj komentarz
+                                {% comment %} ikona {% endcomment %}
+                                <svg class="bi bi-chat-square-dots" width="2em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M14 1H2a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h2.5a2 2 0 0 1 1.6.8L8 14.333 9.9 11.8a2 2 0 0 1 1.6-.8H14a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 0a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2.5a1 1 0 0 1 .8.4l1.9 2.533a1 1 0 0 0 1.6 0l1.9-2.533a1 1 0 0 1 .8-.4H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+                                <path d="M5 6a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                                </svg>
+                                </button>
+                            </form>
+                        </li> 
+                    {% endif %}  
                 </ul>
+                </div>
             </div>       
         </div>
-        <div class="col-md"></div>
+        <div class="col-md-1"></div>
     </div>
 </div>
 

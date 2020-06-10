@@ -3,18 +3,18 @@
 {% block title %}Moje konto{% endblock %}
 
 {% block content %}
-    <div class="container my-5"">
-        <div class="card" style="width: 100%;">
+    <div class="container my-5" style="; padding-left: 200px; padding-right: 200px; padding-top: 20px">
+        <div class="card" style="width: 100%;border:1px solid ">
             <div class="card-header ">
-                <h1>Witaj na stronie swojego konta</h1>
+                <h2>Witaj na stronie swojego konta</h2>
             </div>
             
             <ul class="list-group list-group-flush">
-                <li class="list-group-item"><p>Adres email: {{ user }}</p></li>
-                <li class="list-group-item"><p>Imię: {{ user.first_name }}</p></li>
-                <li class="list-group-item"><p>Nazwisko: {{ user.last_name }}</p></li>
-                <li class="list-group-item"><p>Numer telefonu: {{ user.phone }}</p></li>
-                <li class="list-group-item"><p>Szuka:
+                <li class="list-group-item"><p> <b>Adres email: </b> {{ user }}</p></li>
+                <li class="list-group-item"><p> <b>Imię: </b>{{ user.first_name }}</p></li>
+                <li class="list-group-item"><p> <b>Nazwisko: </b>{{ user.last_name }}</p></li>
+                <li class="list-group-item"><p> <b>Numer telefonu: </b>{{ user.phone }}</p></li>
+                <li class="list-group-item"><p> <b>Szuka: </b>
                 {% if user.is_job_seeker  %}
                     pracy
                 {% endif %}
@@ -22,12 +22,24 @@
                 {% if user.is_employee %}
                     pracowników
                 {% endif %} </p></li>
-                <li class="list-group-item"><p>opis: {{ user.description }}</p></li>
+                <li class="list-group-item"><p> <b>Opis: </b>{{ user.description }}</p></li>
 
 
                 <li class="list-group-item">
-                <a class="btn btn-outline-success my-2 my-sm-0" href={% url 'password_change' %}>Zmień hasło</a>
-                <a class="btn btn-outline-success my-2 my-sm-0" href={% url 'edit' %}>Edytuj konto</a></li>
+                <a class="btn btn-outline-success my-2 my-sm-0" href={% url 'password_change' %}>Zmień hasło
+                {% comment %} ikona {% endcomment %}
+                <svg class="bi bi-shield-lock-fill" width="1.5em" height="1.5em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M5.187 1.025C6.23.749 7.337.5 8 .5c.662 0 1.77.249 2.813.525a61.09 61.09 0 0 1 2.772.815c.528.168.926.623 1.003 1.184.573 4.197-.756 7.307-2.367 9.365a11.191 11.191 0 0 1-2.418 2.3 6.942 6.942 0 0 1-1.007.586c-.27.124-.558.225-.796.225s-.526-.101-.796-.225a6.908 6.908 0 0 1-1.007-.586 11.192 11.192 0 0 1-2.417-2.3C2.167 10.331.839 7.221 1.412 3.024A1.454 1.454 0 0 1 2.415 1.84a61.11 61.11 0 0 1 2.772-.815zm3.328 6.884a1.5 1.5 0 1 0-1.06-.011.5.5 0 0 0-.044.136l-.333 2a.5.5 0 0 0 .493.582h.835a.5.5 0 0 0 .493-.585l-.347-2a.5.5 0 0 0-.037-.122z"/>
+                </svg>
+                </a>
+                <a class="btn btn-outline-success my-2 my-sm-0" href={% url 'edit' %}>Edytuj konto
+                {% comment %} ikona {% endcomment %}
+                <svg class="bi bi-person-circle" width="1.5em" height="1.5em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path d="M13.468 12.37C12.758 11.226 11.195 10 8 10s-4.757 1.225-5.468 2.37A6.987 6.987 0 0 0 8 15a6.987 6.987 0 0 0 5.468-2.63z"/>
+                <path fill-rule="evenodd" d="M8 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+                <path fill-rule="evenodd" d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8z"/>
+                </svg>
+                </a></li>
 
             </ul>
         </div>       

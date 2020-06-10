@@ -129,14 +129,26 @@ def register(request):
 @login_required
 def edit(request):
     if request.method == 'POST':
-        user_form = UserEditForm(instance=request.user,data=request.POST)
+        user_form = UserEditForm(request.POST)
         if user_form.is_valid():
-            user_form.save()
-            messages.success(request, 'Uaktualnienie profilu zakończyło się sukcesem.')
+            
+            first_name = user_form.cleaned_data['first_name']
+            last_name = user_form.cleaned_data['last_name']
+            phone = user_form.cleaned_data['phone']
+            is_job_seeker = user_form.cleaned_data['is_job_seeker']
+            is_employee = user_form.cleaned_data['is_employee']
+            description = user_form.cleaned_data['description']
+
+            user_ = User.objects.filter(pk=request.user.id).update(first_name=first_name,last_name=last_name,phone=phone,is_job_seeker=is_job_seeker,is_employee=is_employee,description=description)
+
+            return redirect(my_account)
         else:
             messages.error(request, 'Wystąpił błąd podczas uaktualniania profilu.')
     else:
-        user_form = UserEditForm(instance = request.user)
+
+        user_form = UserEditForm(initial={'first_name': request.user.first_name,'last_name': request.user.last_name, 'phone': request.user.phone, 'is_job_seeker': request.user.is_job_seeker,'is_employee': request.user.is_employee, 'description': request.user.description})
+
+
     return render(request, 'jobSite_app/edit.html',{'user_form':user_form})
 
 
@@ -201,6 +213,7 @@ def create_offer(request):
             city = City.objects.get(name=offer_form.cleaned_data['city'])
 
 
+
             jobOffer = JobOffer(name=offer_form.cleaned_data['name'],id_employee=request.user,company=offer_form.cleaned_data['company'],category=offer_form.cleaned_data['category'], full_time=offer_form.cleaned_data['full_time'],remote=offer_form.cleaned_data['remote'],description=offer_form.cleaned_data['description'],id_city=city,min_salary=offer_form.cleaned_data['min_salary'],max_salary=offer_form.cleaned_data['max_salary'])
             jobOffer.save()
             return redirect(my_offers)
@@ -231,19 +244,29 @@ def edit_offer(request, id):
             offer = JobOffer.objects.filter(pk=id).update(full_time=full_time,remote=remote,description=description,min_salary=min_salary,max_salary=max_salary)
 
 
-            try:
-                offer = JobOffer.objects.get(pk=id)
-                cities = City.objects.all()
-                countries = Country.objects.all()
-                employee = User.objects.get(pk=offer.id_employee_id)
-                users = User.objects.all()      # poprawic tak zeby nie trzeba bylo pobierac wszystkich uzytkownikow
+            # try:
+            #     offer = JobOffer.objects.get(pk=id)
+            #     cities = City.objects.all()
+            #     countries = Country.objects.all()
+            #     employee = User.objects.get(pk=offer.id_employee_id)
+            #     users = User.objects.all()      # poprawic tak zeby nie trzeba bylo pobierac wszystkich uzytkownikow
 
-                try:
-                    comments = Comment.objects.get(id_job_offer_id=offer.id)
-                except Comment.DoesNotExist:
-                    return render(request, 'jobSite_app/offer_detail.html', {'offer':offer, 'cities':cities, 'countries':countries, 'employee':employee, 'users':users, 'categories':CATEGORY_CHOICES})
-            except JobOffer.DoesNotExist:
-                raise Http404("Ta oferta nie istnieje.")
+            #     try:
+            #         comments = Comment.objects.filter(id_job_offer_id=offer.id)
+            #     except Comment.DoesNotExist:
+            #         comments = None
+
+            # except JobOffer.DoesNotExist:
+            #     raise Http404("Ta oferta nie istnieje.")
+
+            # comment_form = CommentForm()
+            # return render(request, 'jobSite_app/offer_detail.html', {'offer':offer, 'cities':cities, 'countries':countries, 'employee':employee,'comments':comments, 'categories':CATEGORY_CHOICES,'comment_form':comment_form,'users':users})
+            # try:
+            #     my_offers = JobOffer.objects.filter(id_employee_id = request.user.id)
+            # except JobOffer.DoesNotExist:
+            #     my_offers = None
+            
+            return redirect(my_offers)
     else:
         edit_form = EditOfferForm()
         offer = JobOffer.objects.get(id=id)

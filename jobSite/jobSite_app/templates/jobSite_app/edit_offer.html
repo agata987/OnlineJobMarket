@@ -5,13 +5,13 @@
 {% block title %}Edytuj ofertę pracy{% endblock %}
 
 {% block content %}
-<div class="container">
+<div class="container" >
     <div class="row">
         <div class="col-md-3"></div>
-        <div class="col-md-6">
-            <h1>Edytowanie oferty pracy</h1>
+        <div class="col-md-6" >
+            <h4 style="padding-top: 80px; border-bottom: 1px solid; padding-bottom:10px; ">EDYTOWANIE OFERTY PRACY</h4>
             
-            <form method='POST'>
+            <form method='POST'style="padding-top: 40px; ">
                 
                 {% comment %} przykladowa petla z for dla wszystkich inputow w formie {% endcomment %}
 
@@ -19,31 +19,44 @@
                 <p>{{ field.errors }}</p>
                 <p>{{ field.label }} {{ field.input }}</p>
                 {% endfor %} {% endcomment %}
-
-                <h3>Stanowisko: {{ offer.name }}</h3>
-
-                {% if offer.company != NULL %}
-                    <h3> Firma: {{ offer.company }} </h3>
-                    {% else %}
-                    <h3> Firma: Brak </h3>
-                {% endif %}
+                
+                <div style=" padding-bottom: 10px; ">
+                <div class="d-inline h4" >Stanowisko: </div><div class="d-inline h4" style="padding-left: 60px; ">{{ offer.name }}</div>
+                </div>
+  
+                <div style=" padding-bottom: 10px">
+                    {% if offer.company != NULL %}
+                        <div class="d-inline h4" > Firma: </div> <div class="d-inline h4" style="padding-left: 120px;">{{ offer.company }} </div>
+                        {% else %}
+                        <h3> Firma: Brak </h3>
+                    {% endif %}
+                </div>
 
                 {% comment %} kategoria {% endcomment %}
-                {% for cat_num, cat_name in categories %}
-                {% if cat_num == offer.category %}
-                    <h4>Kategoria: {{ cat_name }}</h4>
-                {% endif %}
-                {% endfor %}
+                <div style=" padding-bottom: 10px; border-bottom: 1px dotted">
+                    {% for cat_num, cat_name in categories %}
+                    {% if cat_num == offer.category %}
+                        <div class="d-inline h4" > Kategoria: </div> <div class="d-inline h4" style="padding-left: 77px;">{{ cat_name }}</div>
+                    {% endif %}
+                    {% endfor %}
+                </div>
 
-                <p> {{ edit_form.full_time|as_crispy_field  }} </p>
-                <p> {{ edit_form.remote|as_crispy_field }} </p>
-                <p> {{ edit_form.description|as_crispy_field  }} </p>
-                <p> {{ edit_form.min_salary|as_crispy_field  }}  </p>
-                <p> {{ edit_form.max_salary|as_crispy_field  }}  </p>
+                <div style="padding-top: 20px; padding-bottom:10px">
+               <div class="d-inline h5" >Pełny etat: </div> <div class="d-inline h5" style="padding-left: 10px;"> {{ edit_form.full_time }} </div>
+                </div>
+
+                <div style="padding-bottom:30px">
+                       <div class="d-inline h5" > Zdalnie: </div><div class="d-inline h5" style="padding-left: 10px;"> {{ edit_form.remote}} </div>
+                </div>
+
+
+                <div class=" h5"> {{ edit_form.description|as_crispy_field  }} </div>
+                <div class=" h5"> {{ edit_form.min_salary|as_crispy_field  }} </div>
+                <div class=" h5" style="padding-bottom: 6px"> {{ edit_form.max_salary|as_crispy_field  }} </div>
 
 
                 {% csrf_token %}
-                <p><input type="submit" value="Zatwierdź"></p>
+                <input type="submit" class="btn btn-primary" style=" padding:5px; " value="POTWIERDŹ">
             </form>
         </div>
         <div class="col-md-3"></div>
