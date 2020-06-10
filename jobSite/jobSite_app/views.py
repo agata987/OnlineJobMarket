@@ -160,6 +160,7 @@ def offer_detail(request, id):
             job_offer = JobOffer.objects.get(pk=id)
             comment = Comment(text=comment_form.cleaned_data['text'],id_job_offer=job_offer,id_user=request.user)
             comment.save()
+            comment_form = CommentForm()
     else:
         comment_form = CommentForm()
 
